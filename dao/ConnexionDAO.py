@@ -1,4 +1,7 @@
-import psycopg2  
+import psycopg2  # pip install psycopg2-binary
+from decouple import Config, RepositoryEnv
+
+DOTENV_FILE = './config/.env'
 
 class ConnexionBD:
 
@@ -9,23 +12,19 @@ class ConnexionBD:
     def getConnexion(self):
         try:
             print("- class connexionBD() is running ... \n\n")
-            print("- config/Config.yml is loading ...")
-
             # get file and data
-            with open("/home/keke/DataspellProjects/lvmh_sephora/config/Config.yaml", "r") as fic:
-                donnees = yaml.safe_load(fic)
-            config = donnees["postgreSQLAccess"]
-            db = config["database_name"]
-            host = config["host"]
-            port = config["port"]
-            usr = config["user"]["usr1"]
-            pwd = config["pwd"]["pwd1"]
+            env_config = Config(RepositoryEnv(DOTENV_FILE))
+            db = env_config.get("DATABASE_NAME")
+            host = env_config.get("HOST")
+            port = env_config.get("PORT")
+            username = env_config.get("LOGIN_DATABASE")
+            password = env_config.get("PASSWORD_DATABASE")
 
             self.cnx = psycopg2.connect(dbname=db,
                                   host=host,
                                   port=port,
-                                  user=usr,
-                                  password=pwd
+                                  user=username,
+                                  password=password
                                   )
             return self.cnx
         except Exception as e:

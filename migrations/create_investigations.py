@@ -8,5 +8,5 @@ class CreateInvestigationsTable(Migration):
         id SERIAL PRIMARY KEY,
         advancement VARCHAR(1000),
         fusillade_id BIGINT,
-        FOREIGN KEY (fusillade_id) REFERENCES Fusillades(id),
+        FOREIGN KEY (fusillade_id) REFERENCES Fusillades(id) ON UPDATE CASCADE ON DELETE CASCADE,
         );"""
