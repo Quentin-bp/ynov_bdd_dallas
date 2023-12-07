@@ -35,52 +35,9 @@ class TownsController:
             if res==0:
                 return "ERROR"
 
-            return "Town Added"
+            return "AJOUT BP AVEC SUCCES"
 
         except Exception as e:
             print(f'Erreur_TownsC.insertOne() ::: {e}')
-
-        return None
-
-
-    @staticmethod
-    def update(town : TownModel):
-
-        dao = TownsDAO()
-        try:
-            townUpdated = Towns()
-
-            townUpdated.setID(town.id)
-            townUpdated.setName(town.name)
-            townUpdated.setAddressCode(town.address_code)
-            
-            res: int = dao.update(town.id,townUpdated)
-
-            if res==0:
-                return "ERROR"
-
-            return "Town Updated"
-
-        except Exception as e:
-            print(f'Erreur_TownsC.update() ::: {e}')
-
-        return None
-    
-
-    @staticmethod
-    def delete(id):
-        try:
-
-            dao = TownsDAO()
-
-            res: int = dao.delete(id)
-
-            if res==0 :
-                return "ERROR"
-
-            return "Town deleted"
-
-        except Exception as e:
-            print(f'Erreur_TownsC.delete() ::: {e}')
 
         return None
