@@ -1,4 +1,4 @@
-from ModelM import Model 
+from model.ModelM import Model 
 from FusilladesM import Fusillade 
 class Investigations(Model):
 

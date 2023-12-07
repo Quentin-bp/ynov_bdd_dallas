@@ -1,5 +1,5 @@
 import datetime
-from ModelM import Model 
+from model.ModelM import Model 
 from TownsM import Towns 
 
 class Fusillades(Model):

@@ -1,4 +1,4 @@
-from ModelM import Model 
+from model.ModelM import Model 
 from PersonsM import Person 
 class Juries(Model):
 

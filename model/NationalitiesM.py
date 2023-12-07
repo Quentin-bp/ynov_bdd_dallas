@@ -1,4 +1,4 @@
-from ModelM import Model 
+from model.ModelM import Model 
 class Nationalities(Model):
 
     def __init__(self):

@@ -1,4 +1,6 @@
-from ModelM import Model 
+from pydantic import BaseModel
+
+from model.ModelM import Model 
 
 class Towns(Model):
 
@@ -17,3 +19,9 @@ class Towns(Model):
 
     def getAddressCode(self) -> str:
         return self.__address_code
+
+
+class TownModel(BaseModel):
+    id : int = 0
+    name: str = ""
+    address_code: str = ""

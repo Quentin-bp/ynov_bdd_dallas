@@ -1,4 +1,4 @@
-from ModelM import Model 
+from model.ModelM import Model 
 from TownsM import Towns
 from NationalitiesM import Nationalities
 class Persons(Model):
