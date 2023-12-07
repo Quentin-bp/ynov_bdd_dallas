@@ -6,7 +6,7 @@ class ClassFusilladeM:
         self.__id : int = None
         self.__numero_rue : str = "" # exple 1 bis
         self.__nom_rue: str = ""
-        self.__complement_adress: str = ""
+        self.__complement_address: str = ""
         self.__town_id : ClassTownM = None
         self.__description : str = ""
         self.__date : str = ""
@@ -30,10 +30,10 @@ class ClassFusilladeM:
         return self.__nom_rue
 
     def setComplementAddress(self, complement_address: str) -> None:
-        self.__complement_adress = complement_address
+        self.__complement_address = complement_address
 
     def getComplementAddress(self) -> str:
-        return self.__complement_adress
+        return self.__complement_address
     
     def setTownID(self, town_id: ClassTownM) -> None:
         self.__town_id = town_id

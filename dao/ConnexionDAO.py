@@ -31,4 +31,3 @@ class ConnexionBD:
             print(f"Erreur-CONNECTION ::: {e}")
         return self.cnx
 
-
