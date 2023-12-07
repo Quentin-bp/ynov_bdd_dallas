@@ -20,9 +20,12 @@ class ModelDAO(ABC):
 
         # SELECT
     @abstractmethod
-    def update(self,id,objIns)->int:
+    def update(self,id,objUpdated)->int:
         pass
 
+    @abstractmethod
+    def delete(self,id)->int:
+        pass
     
 
     # DELETE : faire une recherche plein texte

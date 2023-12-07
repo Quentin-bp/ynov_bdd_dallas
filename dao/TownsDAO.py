@@ -14,7 +14,7 @@ class TownsDAO(ModelDAO):
                 res = self.cursor.fetchall()
 
                 towns = []
-                
+
                 if len(res)>0:
 
                     for r in res:
@@ -36,12 +36,6 @@ class TownsDAO(ModelDAO):
 
 
     def insertOne(self, objIns: Towns) -> int:
-        '''
-        Insère un objet dans la table BodyParts.
-
-        :param objIns: L'objet à insérer dans la table.
-        :return: Le nombre de lignes affectées.
-        '''
         try:
             query = '''INSERT INTO Towns (name, address_code) VALUES (%s, %s);'''
             self.cursor.execute(query, (objIns.getName(),objIns.getAddressCode(),))
@@ -49,5 +43,28 @@ class TownsDAO(ModelDAO):
             return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
         except Exception as e:
             print(f"Erreur_TownsDAO.insertOne() ::: {e}")
+            self.cursor.connection.rollback()
+            return 0
+        
+    def update(self, id , objUpdated : Towns)->int:
+        try:
+            query = '''UPDATE Towns SET name = %s,address_code = %s WHERE id = %s;'''
+            self.cursor.execute(query, (objUpdated.getName(), objUpdated.getAddressCode(),id))
+            self.cursor.connection.commit()
+            return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
+        except Exception as e:
+            print(f"Erreur_TownsDAO.update() ::: {e}")
+            self.cursor.connection.rollback()
+            return 0
+
+        
+    def delete(self,id)->int:
+        try:
+            query = '''DELETE FROM Towns WHERE id = %s;'''
+            self.cursor.execute(query, (id,))
+            self.cursor.connection.commit()
+            return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
+        except Exception as e:
+            print(f"Erreur_TownsDAO.delete() ::: {e}")
             self.cursor.connection.rollback()
             return 0
