@@ -48,4 +48,4 @@ class Persons(Model):
         self.__nationality_id = nationality_id
 
     def getNationalityID(self) -> Nationalities:
-        return self.__town_id
+        return self.__nationality_id

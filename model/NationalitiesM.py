@@ -1,5 +1,6 @@
 from ModelM import Model 
-class Nationalities(Model):
+
+class NationalityM(Model):
 
     def __init__(self):
         self.__name: str = ""

@@ -1,29 +1,30 @@
-import datetime
-from ModelM import Model 
-from TownsM import Towns 
+from datetime import datetime
+from ModelM import ModelM 
+from TownsM import TownM 
 
-class Fusillades(Model):
+class FusilladeM(ModelM):
 
     def __init__(self):
-        self.__adresse : str = ""
-        self.__town_id : Towns = None
+        self.__adress : str = ""
+        self.__town_id : TownM = None
         self.__description : str = ""
         self.__date : datetime = None
        
-    def setTownID(self, town_id: Towns ) -> None:
-        self.__town_id = town_id
 
-    def getTownID(self) -> Towns:
-        return self.__town_id
-    
     def setAddress(self, address: str) -> None:
-        self.__adresse = address
+        self.__adress = address
 
     def getAddress(self) -> str:
-        return self.__adresse
+        return self.__adress
     
-    def setDate(self, _date: datetime ) -> None:
-        self.__date = _date
+    def setTownID(self, town_id: TownM) -> None:
+        self.__town_id = town_id
+
+    def getTownID(self) -> TownM:
+        return self.__town_id
+    
+    def setDate(self, date: datetime) -> None:
+        self.__date = date
 
     def getDate(self) -> datetime:
         return self.__date

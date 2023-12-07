@@ -1,5 +1,5 @@
 
-class Model:
+class ModelM:
     def __init__(self):
         self.__id: int = None
 

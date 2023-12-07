@@ -1,6 +1,7 @@
 from ModelM import Model 
 from FusilladesM import Fusillade 
-class Investigations(Model):
+
+class InvestigationM(Model):
 
     def __init__(self):
         self.__fusillade : Fusillade = None

@@ -4,7 +4,7 @@ class Towns(Model):
 
     def __init__(self):
         self.__name: str = ""
-        self.__adresse_code: str = ""
+        self.postal_code: str = ""
         
     def setName(self, name: str) -> None:
         self.__name = name
@@ -13,7 +13,7 @@ class Towns(Model):
         return self.__name
 
     def setAddressCode(self, address_code: str) -> None:
-        self.__adresse_code = address_code
+        self.postal_code = address_code
 
     def getAddressCode(self) -> str:
-        return self.__adresse_code
+        return self.postal_code
