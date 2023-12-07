@@ -24,5 +24,16 @@ async def createTown(town : TownModel):
     return res
 
 
+@app.put("/town")
+async def updateTown(town : TownModel):
+    res = TownsController.update(town)
+    return res
+
+@app.delete("/town")
+async def deleteTown(town : TownModel):
+    print("he")
+    res = TownsController.delete(town.id)
+    return res
+
 if __name__=='__main__':
-    uvicorn.run(app, host="127.0.0.1", port=5001)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

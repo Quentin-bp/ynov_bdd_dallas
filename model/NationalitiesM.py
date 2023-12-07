@@ -1,5 +1,5 @@
 
-class ClassNationalityM:
+class Nationality:
     """
     Classe qui représente le schema de la table Nationalities.
     """

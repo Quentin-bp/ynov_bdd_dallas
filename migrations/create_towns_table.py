@@ -7,7 +7,7 @@ class CreateTownsTable(Migration):
         self.query = """CREATE TABLE IF NOT EXISTS Towns (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
-        address_code VARCHAR(255),
+        postal_code VARCHAR(255),
         town_id BIGINT,
         FOREIGN KEY (town_id) REFERENCES Towns(id) ON UPDATE CASCADE ON DELETE CASCADE,
         nationality_id BIGINT ,

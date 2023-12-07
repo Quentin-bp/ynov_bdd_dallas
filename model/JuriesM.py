@@ -1,12 +1,12 @@
-from PersonsM import ClassPersonM
+from PersonsM import Person
 
-class JuryM:
+class Jury:
     """
     Classe qui représente le schema de la table Juries.
     """
     def __init__(self):
         self.__id : int = None
-        self.__person_id : ClassPersonM = None
+        self.__person_id : Person = None
     
     def setID(self, id: int) -> None:
         self.__id = id
@@ -14,9 +14,9 @@ class JuryM:
     def getID(self, id: int) -> int:
         return self.__id
 
-    def setPersonID(self, person_id: ClassPersonM) -> None:
+    def setPersonID(self, person_id: Person) -> None:
         self.__person_id = person_id
 
-    def getPersonID(self) -> ClassPersonM:
+    def getPersonID(self) -> Person:
         return self.__person_id
 

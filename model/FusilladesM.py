@@ -1,13 +1,13 @@
-from TownsM import ClassTownM 
+from TownsM import Town 
 
-class ClassFusilladeM:
+class Fusillade:
 
     def __init__(self):
         self.__id : int = None
         self.__numero_rue : str = "" # exple 1 bis
         self.__nom_rue: str = ""
         self.__complement_address: str = ""
-        self.__town_id : ClassTownM = None
+        self.__town_id : Town = None
         self.__description : str = ""
         self.__date : str = ""
        
@@ -35,10 +35,10 @@ class ClassFusilladeM:
     def getComplementAddress(self) -> str:
         return self.__complement_address
     
-    def setTownID(self, town_id: ClassTownM) -> None:
+    def setTownID(self, town_id: Town) -> None:
         self.__town_id = town_id
 
-    def getTownID(self) -> ClassTownM:
+    def getTownID(self) -> Town:
         return self.__town_id
     
     def setDate(self, date: str) -> None:

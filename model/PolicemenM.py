@@ -1,12 +1,12 @@
-from PersonsM import ClassPersonM 
+from PersonsM import Person 
 
-class ClassPolicemanM:
+class Policeman:
     """
     Classe qui représente le schema de la table Policemen.
     """
     def __init__(self):
         self.__id: int = None
-        self.__person_id : ClassPersonM = None
+        self.__person_id : Person = None
         self.__serial_numbers : str = ""
         
     def setID(self, id: int) -> None:
@@ -21,9 +21,9 @@ class ClassPolicemanM:
     def getSerialNumbers(self) -> str:
         return self.__serial_numbers
     
-    def setPersonID(self, person_id: ClassPersonM) -> None:
+    def setPersonID(self, person_id: Person) -> None:
         self.__person_id = person_id
 
-    def getPersonID(self) -> ClassPersonM:
+    def getPersonID(self) -> Person:
         return self.__person_id
 

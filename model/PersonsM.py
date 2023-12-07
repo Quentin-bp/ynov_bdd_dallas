@@ -1,8 +1,8 @@
-from TownsM import ClassTownM
-from NationalitiesM import ClassNationalityM
+from TownsM import Town
+from NationalitiesM import Nationality
 
 
-class ClassPersonM:
+class Person:
     """
     Classe qui représente le schema de la table Persons.
     """
@@ -14,8 +14,8 @@ class ClassPersonM:
         self.__numero_rue : str = "" # exple 1 bis
         self.__nom_rue: str = ""
         self.__complement.address: str = ""
-        self.__town_id : ClassTownM = None
-        self.__nationality_id : ClassNationalityM = None
+        self.__town_id : Town = None
+        self.__nationality_id : Nationality = None
 
     def setID(self, id: int) -> None:
         self.__id = id
@@ -59,14 +59,14 @@ class ClassPersonM:
     def getComplementAddress(self) -> str:
         return self.__complement.address
     
-    def setTownID(self, town_id: ClassTownM) -> None:
+    def setTownID(self, town_id: Town) -> None:
         self.__town_id = town_id
 
-    def getTownID(self) -> ClassTownM:
+    def getTownID(self) -> Town:
         return self.__town_id
     
-    def setNationalityID(self, nationality_id: ClassNationalityM) -> None:
+    def setNationalityID(self, nationality_id: Nationality) -> None:
         self.__nationality_id = nationality_id
 
-    def getNationalityID(self) -> ClassNationalityM:
+    def getNationalityID(self) -> Nationality:
         return self.__nationality_id

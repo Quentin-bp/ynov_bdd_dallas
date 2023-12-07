@@ -1,5 +1,6 @@
+from pydantic import BaseModel
 
-class ClassTownM:
+class Town:
     """
     Classe qui représente le schema de la table Town.
     """
@@ -20,8 +21,16 @@ class ClassTownM:
     def getName(self) -> str:
         return self.__name
 
-    def setAddressCode(self, postal_code: str) -> None:
+    def setPostalCode(self, postal_code: str) -> None:
         self.__postal_code = postal_code
 
-    def getAddressCode(self) -> str:
+    def getPostalCode(self) -> str:
         return self.__postal_code
+
+
+
+
+class TownModel(BaseModel):
+    id: int = 0,
+    name: str = ""
+    postal_code: str = ""
