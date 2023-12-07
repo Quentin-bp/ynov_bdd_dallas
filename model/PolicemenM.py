@@ -3,7 +3,6 @@ from PersonsM import Person
 class Policemen(Model):
 
     def __init__(self):
-<<<<<<< HEAD
         self.__person_id : Person = None
         self.__serial_numbers : str = ""   
         
@@ -18,20 +17,4 @@ class Policemen(Model):
 
     def getPersonID(self) -> Person:
         return self.__person_id
-=======
-        self.person_id : Person = None
-        self.serial_numbers : str = ""   
-        
-    def setSerialNumbers(self, _serial_numbers: str) -> None:
-        self.serial_numbers = _serial_numbers
-
-    def getSerialNumbers(self) -> str:
-        return self.serial_numbers
-    
-    def setPersonID(self, _person_id: Person) -> None:
-        self.person_id = _person_id
-
-    def getPersonID(self) -> Person:
-        return self.person_id
->>>>>>> 68d1df8aeaf75441f47f38b44bddd9deb6605ba2
 
