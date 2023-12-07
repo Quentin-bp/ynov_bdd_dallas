@@ -1,20 +1,29 @@
-from ModelM import Model 
-from PersonsM import Person 
-class Suspects(Model):
+from PersonsM import ClassPersonM 
 
+class ClassSuspectM:
+    """
+    Classe qui représente le schema de la table Suspects.
+    """
     def __init__(self):
-        self.__person_id: Person = None
+        self.__id: int = None
+        self.__person_id: ClassPersonM = None
         self.__verdict: str = ""   
-        
+
+    def setID(self, id: int) -> None:
+        self.__id = id
+
+    def getID(self, id: int) -> int:
+        return self.__id
+
     def setVerdict(self, verdict: str) -> None:
         self.__verdict= verdict
 
     def getVerdict(self) -> str:
-        return self.verdict
+        return self.__verdict
     
-    def setPersonID(self, person_id: Person) -> None:
+    def setPersonID(self, person_id: ClassPersonM) -> None:
         self.__person_id= person_id
 
-    def getPersonID(self) -> Person:
-        return self.person_id
+    def getPersonID(self) -> ClassPersonM:
+        return self.__person_id
 

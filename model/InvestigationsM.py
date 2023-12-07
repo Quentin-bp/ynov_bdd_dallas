@@ -1,20 +1,19 @@
-from ModelM import Model 
-from FusilladesM import Fusillade 
+from FusilladesM import ClassFusilladeM 
 
-class InvestigationM(Model):
+class ClassInvestigationM:
 
     def __init__(self):
-        self.__fusillade : Fusillade = None
+        self.__id: int = None
+        self.__fusillade : ClassFusilladeM = None
     
-    def setFusilladeID(self, fusillade_id: Fusillade) -> None:
+    def setFusilladeID(self, fusillade_id: ClassFusilladeM) -> None:
         self.__fusillade = fusillade_id
 
-    def getFusilladeID(self) -> Fusillade:
+    def getFusilladeID(self) -> ClassFusilladeM:
         return self.__fusillade
-
 
     def setAdvancement(self, advancement: str) -> None:
         self.advancement = advancement
 
     def getAdvancement(self) -> str:
-        return self.advancement
+        return self.__advancement

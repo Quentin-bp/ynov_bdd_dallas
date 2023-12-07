@@ -1,32 +1,50 @@
-from datetime import datetime
-from ModelM import ModelM 
-from TownsM import TownM 
+from TownsM import ClassTownM 
 
-class FusilladeM(ModelM):
+class ClassFusilladeM:
 
     def __init__(self):
-        self.__adress : str = ""
-        self.__town_id : TownM = None
+        self.__id : int = None
+        self.__numero_rue : str = "" # exple 1 bis
+        self.__nom_rue: str = ""
+        self.__complement_adress: str = ""
+        self.__town_id : ClassTownM = None
         self.__description : str = ""
-        self.__date : datetime = None
+        self.__date : str = ""
        
+    def setID(self, id: int) -> None:
+        self.__id = id
 
-    def setAddress(self, address: str) -> None:
-        self.__adress = address
+    def getID(self, id: int) -> int:
+        return self.__id
 
-    def getAddress(self) -> str:
-        return self.__adress
+    def setNumeroRue(self, numero_rue: str) -> None:
+        self.__numero_rue = numero_rue
+
+    def getNumeroRue(self) -> str:
+        return self.__numero_rue
+
+    def setNomRue(self, nom_rue: str) -> None:
+        self.__nom_rue = nom_rue
+
+    def getNomRue(self) -> str:
+        return self.__nom_rue
+
+    def setComplementAddress(self, complement_address: str) -> None:
+        self.__complement_adress = complement_address
+
+    def getComplementAddress(self) -> str:
+        return self.__complement_adress
     
-    def setTownID(self, town_id: TownM) -> None:
+    def setTownID(self, town_id: ClassTownM) -> None:
         self.__town_id = town_id
 
-    def getTownID(self) -> TownM:
+    def getTownID(self) -> ClassTownM:
         return self.__town_id
     
-    def setDate(self, date: datetime) -> None:
+    def setDate(self, date: str) -> None:
         self.__date = date
 
-    def getDate(self) -> datetime:
+    def getDate(self) -> str:
         return self.__date
     
     def setDescription(self, description: str) -> None:
