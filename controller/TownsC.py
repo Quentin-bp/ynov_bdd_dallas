@@ -4,6 +4,24 @@ from model.TownsM import Town,TownModel
 class TownsController:
 
     @staticmethod
+    def findById(id):
+        try:
+
+            dao = TownsDAO()
+            print(id)
+            town: Town = dao.findById(id)
+
+            if town==None :
+                return "Town not found"
+
+            return town
+
+        except Exception as e:
+            print(f'Erreur_TownsC.findById() ::: {e}')
+
+        return None
+    
+    @staticmethod
     def findAll():
         try:
 
@@ -11,7 +29,7 @@ class TownsController:
             towns: list[Town] = dao.findAll()
 
             if towns==None :
-                return "ERROR"
+                return "There is no towns in database"
 
             return towns
 

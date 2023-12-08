@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from dao.ConnexionDAO import ConnexionBD
-
 class ModelDAO(ABC):
 
     connect_objet = ConnexionBD().getConnexion()
@@ -22,8 +21,6 @@ class ModelDAO(ABC):
     @abstractmethod
     def delete(self,id)->int:
         pass
-    
-
     
     def operationTable(self, query : str, values : tuple, error: str = "Error_operationTable()"):
             try:

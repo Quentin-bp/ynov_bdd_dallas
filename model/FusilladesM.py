@@ -1,5 +1,6 @@
-from TownsM import Town 
-
+from model.TownsM import Town 
+from pydantic import BaseModel,validator
+from datetime import date
 class Fusillade:
 
     def __init__(self):
@@ -8,8 +9,8 @@ class Fusillade:
         self.__street_name: str = ""
         self.__additional_address: str = ""
         self.__description : str = ""
-        self.__date : str = ""
-        self.__town_id : Town = None
+        self.__date : date = None
+        self.__town : Town = None
 
     def setID(self, id: int) -> None:
         self.__id = id
@@ -35,16 +36,16 @@ class Fusillade:
     def getAdditionalAddress(self) -> str:
         return self.__additional_address
     
-    def setTownID(self, town_id: Town) -> None:
-        self.__town_id = town_id
+    def setTown(self, town: Town) -> None:
+        self.__town = town
 
-    def getTownID(self) -> Town:
-        return self.__town_id
+    def getTown(self) -> Town:
+        return self.__town
     
-    def setDate(self, date: str) -> None:
+    def setDate(self, date: date) -> None:
         self.__date = date
 
-    def getDate(self) -> str:
+    def getDate(self) -> date:
         return self.__date
     
     def setDescription(self, description: str) -> None:
@@ -52,3 +53,13 @@ class Fusillade:
 
     def getDescription(self) -> str:
         return self.__description
+
+
+class FusilladeModel(BaseModel):
+        id: int = 0,
+        street_number: str = ""
+        street_name: str = ""
+        additional_address: str = ""
+        description : str = ""
+        date: str = ""
+        town_id : int

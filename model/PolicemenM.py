@@ -12,7 +12,7 @@ class Policeman:
     def setID(self, id: int) -> None:
         self.__id = id
 
-    def getID(self, id: int) -> int:
+    def getID(self) -> int:
         return self.__id
     
     def setSerialNumbers(self, serial_numbers: str) -> None:

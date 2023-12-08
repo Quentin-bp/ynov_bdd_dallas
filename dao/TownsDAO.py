@@ -5,7 +5,24 @@ class TownsDAO(ModelDAO):
     def __init__(self):
 
         params = ModelDAO.connect_objet
-        self.cursor = params.cursor() 
+        self.cursor = params.cursor()
+
+    def findById(self, id : int) -> Town:
+        try:
+            query = '''SELECT * FROM Towns WHERE id = %s;'''
+            self.cursor.execute(query, (id,))
+            res = self.cursor.fetchone()
+            if res:
+                town = Town()
+                town.setID(res[0])
+                town.setName(res[1])
+                town.setPostalCode(res[2])
+                return town
+            else:
+                return None
+        except Exception as e:
+            print(f"Error_TownsDAO.findById() ::: {e}")
+
         
     def findAll(self) -> list[Town]:
             try:
