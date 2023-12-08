@@ -11,9 +11,9 @@ class Person:
         self.__firstname: str = ""
         self.__lastname: str = ""
         self.__genre : int = None
-        self.__numero_rue : str = "" # exple 1 bis
-        self.__nom_rue: str = ""
-        self.__complement.address: str = ""
+        self.__street_number : str = "" # exple 1 bis
+        self.__street_name: str = ""
+        self.__additional_address: str = ""
         self.__town_id : Town = None
         self.__nationality_id : Nationality = None
 
@@ -41,23 +41,23 @@ class Person:
     def getGenre(self) -> str:
         return self.__genre
     
-    def setNumeroRue(self, numero_rue: str) -> None:
-        self.__numero_rue = numero_rue
+    def setStreetNumber(self, street_number: str) -> None:
+        self.__street_number = street_number
 
-    def getNumeroRue(self) -> str:
-        return self.__numero_rue
+    def getStreetNumber(self) -> str:
+        return self.__street_number
 
-    def setNomRue(self, nom_rue: str) -> None:
-        self.__nom_rue = nom_rue
+    def setStreetName(self, street_name: str) -> None:
+        self.__street_name = street_name
 
-    def getNomRue(self) -> str:
-        return self.__nom_rue
+    def getStreetName(self) -> str:
+        return self.__street_name
 
-    def setComplementAddress(self, complement_address: str) -> None:
-        self.__complement.address = complement_address
+    def setAdditionalAddress(self, additional_address: str) -> None:
+        self.__additional_address = additional_address
 
-    def getComplementAddress(self) -> str:
-        return self.__complement.address
+    def getAdditionalAddress(self) -> str:
+        return self.__additional_address
     
     def setTownID(self, town_id: Town) -> None:
         self.__town_id = town_id

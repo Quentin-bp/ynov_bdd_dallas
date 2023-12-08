@@ -7,7 +7,7 @@ from .create_suspects_table import CreateSuspectsTable
 from .create_juries_table import CreateJuriesTable
 
 from .create_fusillades_table import CreateFusilladesTable
-from .create_investigations import CreateInvestigationsTable
+from .create_investigations_table import CreateInvestigationsTable
 
 
 from dao import ConnexionDAO

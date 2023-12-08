@@ -8,5 +8,7 @@ class Migration :
     def execute(self):
         conn = self.conn.getConnexion()
         cursor = conn.cursor()
-        cursor.execute(self.query)  
+        cursor.execute(self.query)
+        cursor.close()
+        conn.commit()
         conn.close()
