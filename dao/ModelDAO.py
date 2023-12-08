@@ -25,5 +25,13 @@ class ModelDAO(ABC):
     
 
     
-
-    # DELETE : faire une recherche plein texte
+    def operationTable(self, query : str, values : tuple, error: str = "Error_operationTable()"):
+            try:
+                self.cursor.execute(query, values,)   
+                self.cursor.connection.commit()
+                return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
+            except Exception as e:
+                print(f"{error} ::: {e}")
+                self.cursor.connection.rollback()
+                return 0
+        

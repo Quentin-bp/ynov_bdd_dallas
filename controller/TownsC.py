@@ -35,7 +35,7 @@ class TownsController:
             if res==0:
                 return "ERROR"
 
-            return "AJOUT BP AVEC SUCCES"
+            return "Town Added"
 
         except Exception as e:
             print(f'Erreur_TownsC.insertOne() ::: {e}')
