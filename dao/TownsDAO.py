@@ -1,5 +1,5 @@
 from dao.ModelDAO import ModelDAO
-from model.TownsM import Town, TownModel  # Assurez-vous d'importer la classe BodyParts appropriée
+from model.TownsM import Town, TownModel  
 
 class TownsDAO(ModelDAO):
     def __init__(self):

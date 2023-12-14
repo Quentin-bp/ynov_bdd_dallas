@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 
 class Nationality:
     """
@@ -19,3 +20,6 @@ class Nationality:
     def getName(self) -> str:
         return self.__name
 
+class NationalityModel(BaseModel):
+    id: int
+    name : str

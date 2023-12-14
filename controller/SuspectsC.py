@@ -7,7 +7,8 @@ class SuspectsController:
     @staticmethod
     def findById(id):
         try:
-            S = SuspectsDAO().findById(id)
+            dao = SuspectsDAO()
+            S = dao.findById(id)
 
             if S==None:
                 return "Suspects not found"
@@ -19,10 +20,12 @@ class SuspectsController:
     @staticmethod
     def findAll():
         try:
-            list_suspects = SuspectsDAO().findAll(id)
+            dao = SuspectsDAO()
+
+            list_suspects = dao.findAll()
 
             if len(list_suspects)==0:
-                return "There is no Policemen in database"
+                return "There is no Suspects in database"
             return list_suspects
         except Exception as e:
             print(f"Erreur_SuspectController.findAll() ::: {e}")
@@ -35,7 +38,7 @@ class SuspectsController:
         daoPerson = PersonsDAO()
         try:
             person = daoPerson.findById(S.person_id)
-            if (person == None):
+            if not person:
                 return 'This person_id does not exists in database'
                 
             newS = Suspect()
@@ -43,12 +46,12 @@ class SuspectsController:
             newS.setPerson(person)
             newS.setVerdict(S.verdict)
             
-            res: int = dao.insertOne(newSuspects)
+            res: int = dao.insertOne(newS)
 
             if res == 0:
                 return 'ERROR'
 
-            return "Suspects added"
+            return "Suspect added"
         except Exception as e:
             print(f"Erreur_SuspectController.insertOne() ::: {e}")
 

@@ -19,9 +19,9 @@ class PolicemenController:
     @staticmethod
     def findAll():
         try:
-            list_policemen = PolicemenDAO().findAll(id)
+            list_policemen = PolicemenDAO().findAll()
 
-            if len(policeman)==0:
+            if len(list_policemen)==0:
                 return "There is no Policemen in database"
             return list_policemen
         except Exception as e:

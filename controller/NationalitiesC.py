@@ -1,6 +1,6 @@
 from dao.ModelDAO import ModelDAO
 from model import NationalitiesM
-from model.NationalitiesM import Nationality
+from model.NationalitiesM import Nationality, NationalityModel
 from dao.NationalitiesDAO import NationalitiesDAO
 
 class NationalitiesController:
@@ -9,7 +9,7 @@ class NationalitiesController:
     def findAll():
         try:
             ndao = NationalitiesDAO()
-            citizen = list[Nationality] = ndao.findAll()
+            citizen: list[Nationality] = ndao.findAll()
 
             if citizen == None:
                 print("Nationality Unavailable")
@@ -23,7 +23,7 @@ class NationalitiesController:
     def findById(id):
         try:
             ndao = NationalitiesDAO()
-            citizen = list[Nationality] = ndao.findById(id)
+            citizen: list[Nationality] = ndao.findById(id)
 
             if citizen == None:
                 print("Nationality not found")
@@ -34,13 +34,13 @@ class NationalitiesController:
         return None
 
     @staticmethod
-    def insertOne(nId, nName):
+    def insertOne(nationality: NationalityModel):
         try:
             ndao = NationalitiesDAO()
             newNationality = NationalitiesM.Nationality()
 
-            newNationality.setID(nId)
-            newNationality.setName(nName)
+            newNationality.setID(nationality.id)
+            newNationality.setName(nationality.name)
 
             res: int = ndao.insertOne(newNationality)
             if res == 0:
@@ -52,16 +52,16 @@ class NationalitiesController:
         return None
 
     @staticmethod
-    def update(nId, nName):
+    def update(nationality: NationalityModel):
         try:
             ndao = NationalitiesDAO()
 
             nationalityUpdated = Nationality()
 
-            nationalityUpdated.setID(nId)
-            nationalityUpdated.setName(nName)
+            nationalityUpdated.setID(nationality.id)
+            nationalityUpdated.setName(nationality.name)
 
-            res: int = ndao.update(nId, nName)
+            res: int = ndao.update(nationality.id, nationalityUpdated)
             if res == None:
                 return "ERROR"
             return "Nationality Updated"

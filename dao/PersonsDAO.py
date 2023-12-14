@@ -2,21 +2,22 @@ from dao.ModelDAO import ModelDAO
 from dao.TownsDAO import TownsDAO
 from dao.NationalitiesDAO import NationalitiesDAO
 from model.PersonsM import Person, PersonModel
+from dao.ConnexionDAO import ConnexionBD
+
 
 class PersonsDAO(ModelDAO):
-
     def __init__(self):
         
-        params = ModelDAO.connect_object
+        #params = ConnexionBD().getConnexion()
+        params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
 
     def findById(self, id: int)-> Person:
         try:
-            query = """SELECT * FROM Persons WHERE id = %s;"""
-            values = (id,)
-            self.cursor.execute(query, values)
-            res = self.cursor.fetchOne()
+            query = '''SELECT * FROM Persons WHERE id = %s;'''
+            self.cursor.execute(query, (id,))
+            res = self.cursor.fetchone()
 
             townDao = TownsDAO()
             nationalityDao = NationalitiesDAO()
@@ -34,8 +35,8 @@ class PersonsDAO(ModelDAO):
                 town = townDao.findById(res[7])
                 nationality = nationalityDao.findById(res[8])
 
-                person.setTownID(town) 
-                person.setNationalityID(nationality)
+                person.setTown(town) 
+                person.setNationality(nationality)
                 return person
             else:
                 return None
@@ -47,7 +48,7 @@ class PersonsDAO(ModelDAO):
         try:
             query="""SELECT * FROM Persons"""
             self.cursor.execute(query)
-            res = self.sursor.fetchall()
+            res = self.cursor.fetchall()
 
             townDao = TownsDAO()
             nationalityDao = NationalitiesDAO()
@@ -81,16 +82,16 @@ class PersonsDAO(ModelDAO):
 
 
     def insertOne(self, objIns: Person)->int:
-        query = """INSERT INTO Persons VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+        query = """INSERT INTO Persons (last_name, first_name, genre, street_number, street_name, additional_address, town_id, nationality_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
         values = (
-                  ObjIns.getLastName(), 
-                  ObjIns.getFirstName(),
-                  ObjIns.getGenre(),
-                  ObjIns.getStreetNumber(), 
-                  ObjIns.getStreetName(),
-                  ObjIns.getAdditionalAddress(),
-                  ObjIns.getTown().getID(), 
-                  ObjIns.getNationality().getID()
+                  objIns.getLastName(), 
+                  objIns.getFirstName(),
+                  objIns.getGenre(),
+                  objIns.getStreetNumber(), 
+                  objIns.getStreetName(),
+                  objIns.getAdditionalAddress(),
+                  objIns.getTown().getID(), 
+                  objIns.getNationality().getID()
                  )
         error = "Erreur_PersonsDAO.insertOne()"
         return super().operationTable(query, values, error) 

@@ -70,7 +70,7 @@ class Person:
     def setNationality(self, nationality: Nationality) -> None:
         self.__nationality = nationality
 
-    def getNationalityID(self) -> Nationality:
+    def getNationality(self) -> Nationality:
         return self.__nationality
 
 
@@ -81,6 +81,6 @@ class PersonModel(BaseModel):
         genre : int
         street_number : str
         street_name: str
-        additional_address: str
+        additional_address: Optional[str]
         town_id : int
         nationality_id : int

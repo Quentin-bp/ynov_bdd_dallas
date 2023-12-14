@@ -1,6 +1,6 @@
 from dao.ModelDAO import ModelDAO
 from model.NationalitiesM import Nationality
-from dao.ModelDAO import ModelDAO
+
 
 
 class NationalitiesDAO(ModelDAO):
@@ -11,7 +11,7 @@ class NationalitiesDAO(ModelDAO):
 
     def findById(self, id: int) -> Nationality:
         try:
-            query = '''SELECT * FROM Nationality WHERE id = %s ;'''
+            query = '''SELECT * FROM Nationalities WHERE id = %s ;'''
 
             self.cursor.execute(query, (id,))
             res = self.cursor.fetchone()
@@ -27,7 +27,7 @@ class NationalitiesDAO(ModelDAO):
 
     def findAll(self) -> 'list[Nationality]':
         try:
-            query = '''SELECT * FROM Nationality'''
+            query = '''SELECT * FROM Nationalities'''
 
             self.cursor.execute(query)
             res = self.cursor.fetchall()
@@ -51,8 +51,8 @@ class NationalitiesDAO(ModelDAO):
     def insertOne(self, objIns: Nationality) -> int:
 
         try:
-            query = '''INSERT INTO Nationality (name) VALUES (%s,);'''
-            self.cursor.execute(query, (objIns.getName(),))
+            query = '''INSERT INTO Nationalities (name) VALUES (%s);'''
+            self.cursor.execute(query, objIns.getName(),)
             self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
         except Exception as e:
@@ -62,7 +62,7 @@ class NationalitiesDAO(ModelDAO):
 
     def update(self, id, objUpdated: Nationality) -> int:
         try:
-            query = '''UPDATE Nationality SET name = %s WHERE id = %s;'''
+            query = '''UPDATE Nationalities SET name = %s WHERE id = %s;'''
             self.cursor.execute(query, (objUpdated.getName(), id))
             self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
@@ -73,7 +73,7 @@ class NationalitiesDAO(ModelDAO):
 
     def delete(self, id) -> int:
         try:
-            query = '''DELETE FROM Nationality WHERE id = %s;'''
+            query = '''DELETE FROM Nationalities WHERE id = %s;'''
             self.cursor.execute(query, (id,))
             self.cursor.connection.commit()
             return self.cursor.rowcount if self.cursor.rowcount != 0 else 0

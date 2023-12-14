@@ -6,7 +6,9 @@ from model.PolicemenM import Policeman, PolicemanModel
 class PolicemenDAO(ModelDAO):
     def __init__(self):
         
-        params = ModelDAO.connect_object
+        #params = ModelDAO.connect_object
+        #params = ConnexionBD().getConnexion()
+        params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
 
@@ -15,7 +17,7 @@ class PolicemenDAO(ModelDAO):
             query = """SELECT * FROM Policemen WHERE id = %s;"""
             values = (id,)
             self.cursor.execute(query, values)
-            res = self.cursor.fetchOne()
+            res = self.cursor.fetchone()
 
             personDao = PersonsDAO()
 
@@ -36,15 +38,14 @@ class PolicemenDAO(ModelDAO):
             print(f"Error_PolicemenDAO.findById() ::: {e}")
 
 
-    def findAll(self)->'list[Person]':
+    def findAll(self)->'list[Policeman]':
         try:
             query="""SELECT * FROM Policemen"""
             self.cursor.execute(query)
-            res = self.sursor.fetchall()
+            res = self.cursor.fetchall()
 
-            personDao = personsDAO()
-
-            list_persons = []
+            personDao = PersonsDAO()
+            list_policemen = []
 
             if len(res)>0:
                 for r in res:
@@ -52,13 +53,12 @@ class PolicemenDAO(ModelDAO):
 
                     policeman.setID(r[0])
 
-                    person = personDao.findByID(res[1])
+                    person = personDao.findById(r[1])
                     policeman.setPerson(person)
 
                     policeman.setSerialNumbers(r[2]) 
-
-                    list_persons.append(person)
-                return list_persons
+                    list_policemen.append(policeman)
+                return list_policemen
             else:
                 return []
 
@@ -66,10 +66,10 @@ class PolicemenDAO(ModelDAO):
             print(f"Error_PolicemenDAO.findAll() ::: {e}")
 
 
-    def insertOne(self, objIns: Policeman, investigation_id: int)->int:
-        query = """INSERT INTO Policemen VALUES (%s, %s);"""
-        values = (ObjIns.getPerson().getID(), 
-                  ObjIns.getSerialNumbers()
+    def insertOne(self, objIns: Policeman)->int:
+        query = """INSERT INTO Policemen (person_id, serial_numbers) VALUES (%s, %s);"""
+        values = (objIns.getPerson().getID(), 
+                  objIns.getSerialNumbers()
                  )
         error = "Erreur_PolicemenDAO.insertOne()"
         return super().operationTable(query, values, error) 

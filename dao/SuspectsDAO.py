@@ -1,12 +1,14 @@
 from dao.ModelDAO import ModelDAO
 from dao.PersonsDAO import PersonsDAO
 from model.SuspectsM import Suspect, SuspectModel
-
+from model.PersonsM import Person
+from dao.ConnexionDAO import ConnexionBD
 
 class SuspectsDAO(ModelDAO):
     def __init__(self):
-        
-        params = ModelDAO.connect_object
+
+        #params = ModelDAO.connect_object
+        params = ConnexionBD().getConnexion()
         self.cursor = params.cursor()
 
 
@@ -15,21 +17,21 @@ class SuspectsDAO(ModelDAO):
             query = """SELECT * FROM Suspects WHERE id = %s;"""
             values = (id,)
             self.cursor.execute(query, values)
-            res = self.cursor.fetchOne()
+            res = self.cursor.fetchone()
 
             personDao = PersonsDAO()
 
             if res:
-                Suspect = Suspect()
+                suspect = Suspect()
 
-                Suspect.setID(res[0])
+                suspect.setID(res[0])
 
                 person = personDao.findById(res[1])
-                Suspect.setPerson(person)
+                suspect.setPerson(person)
 
-                Suspect.setVerdict(res[2])
+                suspect.setVerdict(res[2])
 
-                return Suspect
+                return suspect
             else:
                 return None
         except Exception as e:
@@ -40,9 +42,9 @@ class SuspectsDAO(ModelDAO):
         try:
             query="""SELECT * FROM Suspects"""
             self.cursor.execute(query)
-            res = self.sursor.fetchall()
+            res = self.cursor.fetchall()
 
-            personDao = personsDAO()
+            personDao = PersonsDAO()
 
             list_suspects = []
 
@@ -52,7 +54,8 @@ class SuspectsDAO(ModelDAO):
 
                     suspect.setID(r[0])
 
-                    person = personDao.findByID(res[1])
+                    person = personDao.findById(r[1])
+                    print(person)
                     suspect.setPerson(person)
 
                     suspect.setVerdict(r[2]) 
@@ -67,16 +70,16 @@ class SuspectsDAO(ModelDAO):
 
 
     def insertOne(self, objIns: Suspect)->int:
-        query = """INSERT INTO Suspects VALUES (%s, %s);"""
-        values = (ObjIns.getPerson().getID(), 
-                  ObjIns.getVerdict()
+        query = """INSERT INTO Suspects (person_id, verdict) VALUES (%s, %s);"""
+        values = (objIns.getPerson().getID(), 
+                  objIns.getVerdict()
                  )
         error = "Erreur_SuspectsDAO.insertOne()"
         return super().operationTable(query, values, error) 
 
 
     def update(self,id,objUpdated)->int:
-        query="""UPDATE Suspects SET person_id=%s, serial_numbers=% WHERE id=%s"""
+        query="""UPDATE Suspects SET person_id=%s, verdict=% WHERE id=%s"""
         values = (objUpdated.getPerson().getID(),
                   objUpdated.getVerdict(),
                   id

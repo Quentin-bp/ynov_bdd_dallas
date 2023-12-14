@@ -61,7 +61,7 @@ class PersonsController:
             newPerson.setGenre(person.genre)
             newPerson.setStreetNumber(person.street_number)
             newPerson.setStreetName(person.street_name)
-            newPerson.setAdditionnalAddress(person.additional_address)
+            newPerson.setAdditionalAddress(person.additional_address)
             newPerson.setTown(town)
             newPerson.setNationality(nationality)
 
