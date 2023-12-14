@@ -27,11 +27,10 @@ class ModelDAO(ABC):
                 self.cursor.execute(query, values,)  
                 self.cursor.connection.commit()
   
-                res = 0
-                if 'RETURNING' in query:
+                res = self.cursor.rowcount if self.cursor.rowcount != 0 else 0
+                if res != 0 and 'RETURNING' in query:
                      res = self.cursor.fetchone()[0]
-                else :
-                     res = self.cursor.rowcount if self.cursor.rowcount != 0 else 0
+                     
                 return res
             except Exception as e:
                 print(f"{error} ::: {e}")
