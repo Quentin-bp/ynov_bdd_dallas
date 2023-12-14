@@ -29,5 +29,6 @@ class ConnexionBD:
             return self.cnx
         except Exception as e:
             print(f"Erreur-CONNECTION ::: {e}")
-        return self.cnx
+            raise e
+        #return self.cnx
 

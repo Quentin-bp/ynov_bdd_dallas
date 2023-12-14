@@ -1,4 +1,5 @@
-from PersonsM import Person 
+from model.PersonsM import Person 
+from pydantic import BaseModel
 
 class Policeman:
     """
@@ -6,7 +7,7 @@ class Policeman:
     """
     def __init__(self):
         self.__id: int = None
-        self.__person_id : Person = None
+        self.__person : Person = None
         self.__serial_numbers : str = ""
         
     def setID(self, id: int) -> None:
@@ -21,9 +22,14 @@ class Policeman:
     def getSerialNumbers(self) -> str:
         return self.__serial_numbers
     
-    def setPersonID(self, person_id: Person) -> None:
-        self.__person_id = person_id
+    def setPerson(self, person: Person) -> None:
+        self.__person = person
 
-    def getPersonID(self) -> Person:
-        return self.__person_id
+    def getPerson(self) -> Person:
+        return self.__person
 
+
+class PolicemanModel(BaseModel):
+    id : int
+    person_id : int
+    serial_numbers : str

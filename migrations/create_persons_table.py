@@ -12,7 +12,9 @@ class CreatePersonsTable(Migration):
         street_number VARCHAR(255),
         street_name VARCHAR(255),
         additional_address VARCHAR(255),
+        town_id BIGINT,
         nationality_id BIGINT,
+        FOREIGN KEY (town_id) REFERENCES Towns(id) ON UPDATE CASCADE ON DELETE CASCADE,
         FOREIGN KEY (nationality_id) REFERENCES Nationalities(id) ON UPDATE CASCADE ON DELETE CASCADE
 
         );"""

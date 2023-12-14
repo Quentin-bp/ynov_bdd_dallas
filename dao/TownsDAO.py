@@ -24,7 +24,7 @@ class TownsDAO(ModelDAO):
             print(f"Error_TownsDAO.findById() ::: {e}")
 
         
-    def findAll(self) -> list[Town]:
+    def findAll(self) -> 'list[Town]':
             try:
                 query = '''SELECT * FROM Towns'''
                 self.cursor.execute(query)

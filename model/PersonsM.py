@@ -1,5 +1,7 @@
-from TownsM import Town
-from NationalitiesM import Nationality
+from model.TownsM import Town
+from pydantic import BaseModel
+from typing import Optional
+from model.NationalitiesM import Nationality
 
 
 class Person:
@@ -11,16 +13,16 @@ class Person:
         self.__firstname: str = ""
         self.__lastname: str = ""
         self.__genre : int = None
-        self.__street_number : str = "" # exple 1 bis
+        self.__street_number : str = "" # exple : rue 1 bis
         self.__street_name: str = ""
         self.__additional_address: str = ""
-        self.__town_id : Town = None
-        self.__nationality_id : Nationality = None
+        self.__town : Town = None
+        self.__nationality : Nationality = None
 
     def setID(self, id: int) -> None:
         self.__id = id
 
-    def getID(self, id: int) -> int:
+    def getID(self) -> int:
         return self.__id
 
     def setFirstName(self, firstname: str) -> None:
@@ -59,14 +61,26 @@ class Person:
     def getAdditionalAddress(self) -> str:
         return self.__additional_address
     
-    def setTownID(self, town_id: Town) -> None:
-        self.__town_id = town_id
+    def setTown(self, town: Town) -> None:
+        self.__town = town
 
-    def getTownID(self) -> Town:
-        return self.__town_id
+    def getTown(self) -> Town:
+        return self.__town
     
-    def setNationalityID(self, nationality_id: Nationality) -> None:
-        self.__nationality_id = nationality_id
+    def setNationality(self, nationality: Nationality) -> None:
+        self.__nationality = nationality
 
     def getNationalityID(self) -> Nationality:
-        return self.__nationality_id
+        return self.__nationality
+
+
+class PersonModel(BaseModel):
+        id: int
+        firstname: str 
+        lastname: str
+        genre : int
+        street_number : str
+        street_name: str
+        additional_address: str
+        town_id : int
+        nationality_id : int
