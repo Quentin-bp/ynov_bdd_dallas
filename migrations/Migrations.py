@@ -9,7 +9,11 @@ from .create_juries_table import CreateJuriesTable
 from .create_fusillades_table import CreateFusilladesTable
 from .create_investigations_table import CreateInvestigationsTable
 
+from .create_investigations_policemen_table import CreateInvestigationsPolicemenTable
+from .create_investigations_juries_table import CreateInvestigationsJuriesTable
+from .create_investigations_suspects_table import CreateInvestigationsSuspectsTable
 
+from .update_investigations_table_add_state_column import UpdateInvestigationsTableStateColumn
 from dao import ConnexionDAO
 
 
@@ -29,6 +33,11 @@ class Migrations :
         create_fusillades = CreateFusilladesTable(self.conn)
         create_investigations = CreateInvestigationsTable(self.conn)
 
+        create_investigations_suspects = CreateInvestigationsSuspectsTable(self.conn)
+        create_investigations_policemen = CreateInvestigationsPolicemenTable(self.conn)
+        create_investigations_juries = CreateInvestigationsJuriesTable(self.conn)
+
+        update_investigations_table_add_state_column = UpdateInvestigationsTableStateColumn(self.conn)
         return [
             create_towns,
             create_nationalities,
@@ -39,7 +48,14 @@ class Migrations :
             create_juries,
 
             create_fusillades,
-            create_investigations
+            create_investigations,
+
+            create_investigations_suspects,
+            create_investigations_policemen,
+            create_investigations_juries,
+
+            update_investigations_table_add_state_column
+            
         ]
     
     def runAllMigrations(self):
