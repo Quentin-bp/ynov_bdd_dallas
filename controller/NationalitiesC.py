@@ -8,12 +8,12 @@ class NationalitiesController:
     @staticmethod
     def findAll():
         try:
-            ndao = NationalitiesDAO()
-            citizen: list[Nationality] = ndao.findAll()
+            dao = NationalitiesDAO()
+            nationality = list[Nationality] = dao.findAll()
 
-            if citizen == None:
+            if nationality is not None:
                 print("Nationality Unavailable")
-                return citizen
+                return nationality
 
         except Exception as e:
             print(f"Erreur_NationalitiesC.findAll():::{e}")
@@ -22,12 +22,12 @@ class NationalitiesController:
     @staticmethod
     def findById(id):
         try:
-            ndao = NationalitiesDAO()
-            citizen: list[Nationality] = ndao.findById(id)
+            dao = NationalitiesDAO()
+            nationality: Nationality = dao.findById(id)
 
-            if citizen == None:
+            if nationality == None:
                 print("Nationality not found")
-            return citizen
+            return nationality
 
         except Exception as e:
             print(f"Erreur_NationalitiesC.findById():::{e}")
@@ -36,13 +36,13 @@ class NationalitiesController:
     @staticmethod
     def insertOne(nationality: NationalityModel):
         try:
-            ndao = NationalitiesDAO()
+            dao = NationalitiesDAO()
             newNationality = NationalitiesM.Nationality()
 
             newNationality.setID(nationality.id)
             newNationality.setName(nationality.name)
 
-            res: int = ndao.insertOne(newNationality)
+            res: int = dao.insertOne(newNationality)
             if res == 0:
                 return "ERROR"
             return "Nationality Added"
@@ -54,14 +54,14 @@ class NationalitiesController:
     @staticmethod
     def update(nationality: NationalityModel):
         try:
-            ndao = NationalitiesDAO()
+            dao = NationalitiesDAO()
 
             nationalityUpdated = Nationality()
 
             nationalityUpdated.setID(nationality.id)
             nationalityUpdated.setName(nationality.name)
 
-            res: int = ndao.update(nationality.id, nationalityUpdated)
+            res: int = dao.update(nationality.id, nationalityUpdated)
             if res == None:
                 return "ERROR"
             return "Nationality Updated"
@@ -73,9 +73,9 @@ class NationalitiesController:
     @staticmethod
     def delete(id):
         try:
-            ndao = NationalitiesDAO()
+            dao = NationalitiesDAO()
 
-            res: int = ndao.delete(id)
+            res: int = dao.delete(id)
             if res == 0:
                 return "ERROR"
             return "Nationality Deleted"

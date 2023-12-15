@@ -47,7 +47,7 @@ class PolicemenController:
 
             if res == 0:
                 return 'ERROR'
-
+                
             return "Policeman added"
         except Exception as e:
             print(f"Erreur_PolicemenController.insertOne() ::: {e}")

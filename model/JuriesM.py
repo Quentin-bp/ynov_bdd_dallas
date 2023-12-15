@@ -1,4 +1,5 @@
-from PersonsM import Person
+from model.PersonsM import Person
+from pydantic import BaseModel
 
 class Jury:
     """
@@ -20,3 +21,6 @@ class Jury:
     def getPersonID(self) -> Person:
         return self.__person_id
 
+class JuryModel(BaseModel):
+    id : int
+    person_id : int
