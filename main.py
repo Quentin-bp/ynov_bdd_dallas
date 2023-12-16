@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
-from controller.Investigation_PolicemenC import Investigation_PolicemenController
-from controller.Investigation_SuspectsC import Investigation_SuspectsController
-from controller.Investigation_JuriesC import Investigation_JuriesController
+from controller.InvestigationPolicemenC import InvestigationPolicemenController
+from controller.InvestigationSuspectsC import InvestigationSuspectsController
+from controller.InvestigationJuriesC import InvestigationJuriesController
 from controller.DatabaseC import DatabaseController
 from controller.TownsC import TownsController
 from controller.InvestigationsC import InvestigationsController
@@ -11,16 +11,19 @@ from controller.FusilladesC import FusilladesController
 from controller.PersonsC import PersonsController
 from controller.PolicemenC import PolicemenController
 from controller.SuspectsC import SuspectsController
+from controller.JuriesC import JuriesController
+
 from model.TownsM import TownModel
 from model.NationalitiesM import NationalityModel
-from model.JuriesM import JuryModel
 from model.InvestigationsM import InvestigationModel
 from model.FusilladesM import FusilladeModel
 from model.PersonsM import PersonModel
 from model.PolicemenM import PolicemanModel
 from model.SuspectsM import SuspectModel
-
+from model.JuriesM import JuryModel
+from model.InvestigationsPersonsM import InvestigationSuspect, InvestigationPoliceman, InvestigationJury
 app = FastAPI()
+descriptionGeneral = "Operations sur la table "
 
 @app.get("/", tags=['Init'])
 async def start():
@@ -32,201 +35,209 @@ async def start():
 async def createDatabase():
     return DatabaseController.createDatabase()
 
-############### Associations #####################################
-@app.post("/Investigation_Policemen/{investigation_id}/{policeman_id}", tags=['Associations'])
-async def createInvestigationPolicemen(investigation_id:int, policeman_id:int):
-    return Investigation_PolicemenController.insertOne(investigation_id, policeman_id)
-
-@app.post("/Investigation_suspects/{investigation_id}/{suspect_id}", tags=['Associations'])
-async def createInvestigationSuspects(investigation_id:int, suspect_id:int):
-    return Investigation_SuspectsController.insertOne(investigation_id, suspect_id)
-
-@app.post("/Investigation_Juries/{investigation_id}/{jury_id}", tags=['Associations'])
-async def createInvestigationJuries(investigation_id:int, jury_id:int):
-    return Investigation_JuriesController.insertOne(investigation_id, jury_id)
-
 ################# Nationalities #############################################
-
-@app.get("/Nationalities", tags=['Nationalities'], description="Operations sur la table nationalité")
+nationalitiesTag = "Nationalities"
+@app.get("/nationalities", tags=[nationalitiesTag], description=descriptionGeneral + nationalitiesTag)
 async def getNationalities():
     return NationalitiesController.findAll()
 
-@app.get("/Nationalities/{id}", tags=['Nationalities'], description="Operations sur la table nationalité")
+@app.get("/nationality/{id}", tags=[nationalitiesTag], description=descriptionGeneral + nationalitiesTag)
 async def getNationality(id):
     return NationalitiesController.findById(id)
 
-@app.post("/Nationalities", tags=['Nationalities'], description="Operations sur la table nationalité")
+@app.post("/nationality", tags=[nationalitiesTag], description=descriptionGeneral + nationalitiesTag)
 async def createNationality(nationality : NationalityModel):
     return NationalitiesController.insertOne(nationality)
 
-@app.put("/Nationalities", tags=['Nationalities'], description="Operations sur la table nationalité")
-async def updateNationality(nationality : NationalityModel):
-    return NationalitiesController.update(nationality)
+@app.put("/nationality/{id}", tags=[nationalitiesTag], description=descriptionGeneral + nationalitiesTag)
+async def updateNationality(id : int,nationality : NationalityModel):
+    return NationalitiesController.update(id,nationality)
 
-@app.delete("/Nationalities", tags=['Nationalities'], description="Operations sur la table nationalité")
-async def deleteNationality(nationality : NationalityModel):
-    return NationalitiesController.delete(nationality.id)
+@app.delete("/nationality/{id}", tags=[nationalitiesTag], description=descriptionGeneral + nationalitiesTag)
+async def deleteNationality(id : int):
+    return NationalitiesController.delete(id)
 
 
 ################# Towns #############################################
 
-@app.get("/towns", tags=['Towns'], description="Operations sur la table villes")
+townsTag = "Towns"
+@app.get("/towns", tags=[townsTag], description=descriptionGeneral + townsTag)
 async def getTowns():
     return TownsController.findAll()
 
-@app.get("/town/{id}", tags=['Towns'], description="Operations sur la table villes")
+@app.get("/town/{id}", tags=[townsTag], description=descriptionGeneral + townsTag)
 async def getTown(id):
     return TownsController.findById(id)
 
-@app.post("/town", tags=['Towns'], description="Operations sur la table villes")
+@app.post("/town", tags=[townsTag], description=descriptionGeneral + townsTag)
 async def createTown(town : TownModel):
     return TownsController.insertOne(town)
 
-@app.put("/town", tags=['Towns'], description="Operations sur la table villes")
-async def updateTown(town : TownModel):
-    return TownsController.update(town)
+@app.put("/town/{id}", tags=[townsTag], description=descriptionGeneral + townsTag)
+async def updateTown(id : int,town : TownModel):
+    return TownsController.update(id, town)
 
-@app.delete("/town", tags=['Towns'], description="Operations sur la table villes")
-async def deleteTown(town : TownModel):
-    return TownsController.delete(town.id)
+@app.delete("/town/{id}", tags=[townsTag], description=descriptionGeneral + townsTag)
+async def deleteTown(id : int):
+    return TownsController.delete(id)
 
 
 ################# Fusillades #############################################
-
-@app.get("/fusillades", tags=['Fusillades'], description="Operations sur la table fusillades")
+fusilladesTag = "Fusillades"
+@app.get("/fusillades", tags=[fusilladesTag], description=descriptionGeneral + fusilladesTag)
 async def getFusillades():
     return FusilladesController.findAll()
 
-@app.get("/fusillade/{id}", tags=['Fusillades'], description="Operations sur la table fusillades")
+@app.get("/fusillade/{id}", tags=[fusilladesTag], description=descriptionGeneral + fusilladesTag)
 async def getFusillade(id):
     return FusilladesController.findById(id)
 
-@app.post("/fusillade", tags=['Fusillades'], description="Operations sur la table fusillades")
+@app.post("/fusillade", tags=[fusilladesTag], description=descriptionGeneral + fusilladesTag)
 async def createFusillade(fusillade : FusilladeModel):
     return FusilladesController.insertOne(fusillade)
 
-@app.put("/fusillade", tags=['Fusillades'], description="Operations sur la table fusillades")
-async def updateFusillade(fusillade : FusilladeModel):
-    return FusilladesController.update(fusillade)
+@app.put("/fusillade/{id}", tags=[fusilladesTag], description=descriptionGeneral + fusilladesTag)
+async def updateFusillade(id : int,fusillade : FusilladeModel):
+    return FusilladesController.update(id,fusillade)
 
-@app.delete("/fusillade", tags=['Fusillades'], description="Operations sur la table fusillades")
-async def deleteFusillade(fusillade : FusilladeModel):
-    return FusilladesController.delete(fusillade.id)
+@app.delete("/fusillade/{id}", tags=[fusilladesTag], description=descriptionGeneral + fusilladesTag)
+async def deleteFusillade(id: int):
+    return FusilladesController.delete(id)
 
 
 ################## Persons ################################
-@app.get("/persons", tags=['Persons'], description="Operations sur la table persons")
+personsTag = "Persons"
+@app.get("/persons", tags=[personsTag], description=descriptionGeneral + personsTag)
 async def getPersons():
     return PersonsController.findAll()
 
-@app.get("/persons/{id}", tags=['Persons'], description="Operations sur la table persons")
+@app.get("/person/{id}", tags=[personsTag], description=descriptionGeneral + personsTag)
 async def getPerson(id: int):
     return PersonsController.findById(id)
 
-@app.post("/persons", tags=['Persons'], description="Operations sur la table persons")
+@app.post("/person", tags=[personsTag], description=descriptionGeneral + personsTag)
 async def createPerson(person : PersonModel):
     return PersonsController.insertOne(person)
 
-@app.put("/persons", tags=['Persons'], description="Operations sur la table persons")
-async def updatePerson(person : PersonModel):
-    return PersonsController.update(person)
+@app.put("/person/{id}", tags=[personsTag], description=descriptionGeneral + personsTag)
+async def updatePerson(id: int,person : PersonModel):
+    return PersonsController.update(id,person)
 
-@app.delete("/persons", tags=['Persons'], description="Operations sur la table persons")
-async def deletePerson(person : PersonModel):
-    return PersonsController.delete(person.id)
+@app.delete("/person/{id}", tags=[personsTag], description=descriptionGeneral + personsTag)
+async def deletePerson(id: int):
+    return PersonsController.delete(id)
 
 
 ################## Policemen ################################
-@app.get("/policemen", tags=['Policemen'], description="Operations sur la table policemen")
+policemenTag = "Policemen"
+@app.get("/policemen", tags=[policemenTag], description=descriptionGeneral + policemenTag)
 async def getPolicemen():
     return PolicemenController.findAll()
 
-@app.get("/policemen/{id}", tags=['Policemen'], description="Operations sur la table policemen")
+@app.get("/policeman/{id}", tags=[policemenTag], description=descriptionGeneral + policemenTag)
 async def getPoliceman(id):
     return PolicemenController.findById(id)
 
-@app.post("/policemen", tags=['Policemen'], description="Operations sur la table policemen")
+@app.post("/policeman", tags=[policemenTag], description=descriptionGeneral + policemenTag)
 async def createPoliceman(policeman : PolicemanModel):
     return PolicemenController.insertOne(policeman)
 
-@app.put("/policemen", tags=['Policemen'], description="Operations sur la table policemen")
-async def updatePoliceman(policeman : PolicemanModel):
-    return PolicemenController.update(policeman)
+@app.put("/policeman/{id}", tags=[policemenTag], description=descriptionGeneral + policemenTag)
+async def updatePoliceman(id : int,policeman : PolicemanModel):
+    return PolicemenController.update(id, policeman)
 
-@app.delete("/policemen", tags=['Policemen'], description="Operations sur la table policemen")
-async def deletePoliceman(policeman : PolicemanModel):
-    return PolicemenController.delete(policeman.id)
+@app.delete("/policeman/{id}", tags=[policemenTag], description=descriptionGeneral + policemenTag)
+async def deletePoliceman(id : int):
+    return PolicemenController.delete(id)
 
 ################## Suspects ################################
-@app.get("/suspects", tags=['Suspects'], description="Operations sur la table suspects")
+suspectsTag = "Suspects"
+@app.get("/suspects", tags=[suspectsTag], description=descriptionGeneral + suspectsTag)
 async def getSuspects():
     return SuspectsController.findAll()
 
-@app.get("/suspects/{id}", tags=['Suspects'], description="Operations sur la table suspects")
+@app.get("/suspect/{id}", tags=[suspectsTag], description=descriptionGeneral + suspectsTag)
 async def getSuspect(id):
     return SuspectsController.findById(id)
 
-@app.post("/suspects", tags=['Suspects'], description="Operations sur la table suspects")
+@app.post("/suspect", tags=[suspectsTag], description=descriptionGeneral + suspectsTag)
 async def createSuspect(suspect : SuspectModel):
     return SuspectsController.insertOne(suspect)
 
-@app.put("/suspects", tags=['Suspects'], description="Operations sur la table suspects")
-async def updateSuspect(suspect : SuspectModel):
-    return SuspectsController.update(suspect)
+@app.put("/suspect/{id}", tags=[suspectsTag], description=descriptionGeneral + suspectsTag)
+async def updateSuspect(id : int,suspect : SuspectModel):
+    return SuspectsController.update(id,suspect)
 
-@app.delete("/suspects", tags=['Suspects'], description="Operations sur la table suspects")
-async def deleteSuspect(suspect : SuspectModel):
-    return SuspectsController.delete(suspect.id)
+@app.delete("/suspect/{id}", tags=[suspectsTag], description=descriptionGeneral + suspectsTag)
+async def deleteSuspect(id : int):
+    return SuspectsController.delete(id)
 
 
 ################## Juries ################################
-@app.get("/juries", tags=['Juries'], description="Operations sur la table juries")
+juriesTag = "Juries"
+@app.get("/juries", tags=[juriesTag], description=descriptionGeneral + juriesTag)
 async def getJuries():
     return JuriesController.findAll()
 
-@app.get("/juries/{id}", tags=['Juries'], description="Operations sur la table juries")
-async def getJury(id):
+@app.get("/jury/{id}", tags=[juriesTag], description=descriptionGeneral + juriesTag)
+async def getJury(id : int):
     return JuriesController.findById(id)
 
-@app.post("/juries", tags=['Juries'], description="Operations sur la table juries")
+@app.post("/jury", tags=[juriesTag], description=descriptionGeneral + juriesTag)
 async def createJury(jury : JuryModel):
     return JuriesController.insertOne(jury)
 
-@app.put("/juries", tags=['Juries'], description="Operations sur la table juries")
-async def updateJury(jury : JuryModel):
-    return JuriesController.update(jury)
+@app.put("/jury/{id}", tags=[juriesTag], description=descriptionGeneral + juriesTag)
+async def updateJury(id : int,jury : JuryModel):
+    return JuriesController.update(id,jury)
 
-@app.delete("/juries", tags=['Juries'], description="Operations sur la table juries")
-async def deleteJury(jury : JuryModel):
-    return JuriesController.delete(jury.id)
+@app.delete("/jury/{id}", tags=[juriesTag], description=descriptionGeneral + juriesTag)
+async def deleteJury(id : int):
+    return JuriesController.delete(id)
 
 
 ################# Investigations #############################################
-
-@app.get("/investigation", tags=['Investigations'], description="Operations sur la table investigations")
+investigationsTag = "Investigations"
+@app.get("/investigations", tags=[investigationsTag], description=descriptionGeneral + investigationsTag)
 async def getInvestigations():
     return InvestigationsController.findAll()
 
-@app.get("/investigation/{id}", tags=['Investigations'], description="Operations sur la table investigations")
+@app.get("/investigation/{id}", tags=[investigationsTag], description=descriptionGeneral + investigationsTag)
 async def getInvestigation(id):
     return InvestigationsController.findById(id)
 
-@app.post("/investigation", tags=['Investigations'], description="Operations sur la table investigations")
+@app.post("/investigation", tags=[investigationsTag], description=descriptionGeneral + investigationsTag)
 async def createInvestigation(investigation : InvestigationModel):
     return InvestigationsController.insertOne(investigation)
 
-@app.put("/investigation", tags=['Investigations'], description="Operations sur la table investigations")
-async def updateInvestigation(investigation : InvestigationModel):
-    return InvestigationsController.update(investigation)
+@app.put("/investigation/{id}", tags=[investigationsTag], description=descriptionGeneral + investigationsTag)
+async def updateInvestigation(id : int,investigation : InvestigationModel):
+    return InvestigationsController.update(id,investigation)
 
-@app.delete("/investigation", tags=['Investigations'], description="Operations sur la table investigations")
-async def deleteInvestigation(investigation : InvestigationModel):
-    return InvestigationsController.delete(investigation.id)
+@app.delete("/investigation/{id}", tags=[investigationsTag], description=descriptionGeneral + investigationsTag)
+async def deleteInvestigation(id : int):
+    return InvestigationsController.delete(id)
 
-@app.get("/investigation/{role}/{last_name}/{first_name}", tags=['Investigations'], description='Rechercher une enquête par le nom, prénom et le role de la personne')
+@app.get("/investigation/{role}/{last_name}/{first_name}", tags=[investigationsTag], description='Rechercher une enquête par le nom, prénom et le role de la personne')
 async def findByNameAndRole(last_name:str, first_name:str, role:str):
     return InvestigationsController.findByNameAndRole(last_name, first_name, role)
 
+@app.post("/solve_investigation/{id}", tags=[investigationsTag], description="Lancer la résolution d'une enquête") # pourquoi pas un get ? 
+async def solveInvestigation(id):
+    return InvestigationsController.solveInvestigation(id)
+
+############### Associations #####################################
+@app.post("/investigation_policemen", tags=['Associations'])
+async def createInvestigationPolicemen(link : InvestigationPoliceman):
+    return InvestigationPolicemenController.insertOne(link)
+
+@app.post("/investigation_suspects", tags=['Associations'])
+async def createInvestigationSuspects(link : InvestigationSuspect):
+    return InvestigationSuspectsController.insertOne(link)
+
+@app.post("/investigation_juries", tags=['Associations'])
+async def createInvestigationJuries(link : InvestigationJury):
+    return InvestigationJuriesController.insertOne(link)
 
 if __name__=='__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)

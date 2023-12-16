@@ -1,11 +1,10 @@
 from model.SuspectsM import Suspect, SuspectModel
 from dao.SuspectsDAO import SuspectsDAO
 from dao.PersonsDAO import PersonsDAO
-
 class SuspectsController:
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
             dao = SuspectsDAO()
             suspect = dao.findById(id)
@@ -57,7 +56,7 @@ class SuspectsController:
 
     
     @staticmethod
-    def update(suspect: SuspectModel):
+    def update(id : int,suspect: SuspectModel):
 
         dao = SuspectsDAO()
         daoPerson = PersonsDAO()
@@ -67,27 +66,27 @@ class SuspectsController:
                 return 'This person_id does not exists in database'
                 
             updatedSuspect = Suspect()
-
+            updatedSuspect.setID(id)
             updatedSuspect.setPerson(person)
-            updatedSuspect.setSerialNumbers(suspect.verdict)
+            updatedSuspect.setVerdict(suspect.verdict)
             
-            res: int = dao.update(updatedSuspect)
+            res: int = dao.update(id,updatedSuspect)
 
             if res == 0:
                 return 'ERROR'
 
             return "Suspects data updated"
         except Exception as e:
-            print(f"Erreeu_SuspectController.update() ::: {e}")
+            print(f"Erreur_SuspectController.update() ::: {e}")
 
     
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             res: int = SuspectsDAO().delete(id)
             if res==0:
                 return "ERROR"
             return "Suspects deleted"
         except Exception as e:
-            print(f"Erreeu_SuspectController.delete() ::: {e}")
+            print(f"Erreur_SuspectController.delete() ::: {e}")
             return None

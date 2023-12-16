@@ -7,7 +7,7 @@ from dao.NationalitiesDAO import NationalitiesDAO
 class PersonsController:
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
             dao = PersonsDAO()
             print(id)
@@ -48,16 +48,16 @@ class PersonsController:
         try:
             town = daoTown.findById(person.town_id)
             if (town == None):
-                return 'This Town id is not founded/does not exists in database'
+                return 'This Town id is not founded/does not exist in database'
 
-            nationality = daoTown.findById(person.nationality_id)
+            nationality = daoNationality.findById(person.nationality_id)
             if (nationality == None):
-                return 'This Nationality id is not founded/does not exists in database'    
+                return 'This Nationality id is not founded/does not exist in database'    
 
             newPerson = Person()
 
-            newPerson.setFirstName(person.firstname)
-            newPerson.setLastName(person.lastname)
+            newPerson.setFirstName(person.first_name)
+            newPerson.setLastName(person.last_name)
             newPerson.setGenre(person.genre)
             newPerson.setStreetNumber(person.street_number)
             newPerson.setStreetName(person.street_name)
@@ -78,7 +78,7 @@ class PersonsController:
         return None
 
     @staticmethod
-    def update(person : PersonModel):
+    def update(id: int,person : PersonModel):
 
         dao = PersonsDAO()
         daoTown = TownsDAO()
@@ -86,26 +86,26 @@ class PersonsController:
         try:
             town = daoTown.findById(person.town_id)
             if (town == None):
-                return 'This Town id is not founded/does not exists in database'
+                return 'This Town id is not founded/does not exist in database'
 
-            nationality = daoTown.findById(person.nationality_id)
+            nationality = daoNationality.findById(person.nationality_id)
             if (nationality == None):
-                return 'This Nationality id is not founded/does not exists in database'    
+                return 'This Nationality id is not founded/does not exist in database'    
 
             updatedPerson = Person()
 
-            updatedPerson.setID(person.id)
-            updatedPerson.setFirstName(person.firstname)
-            updatedPerson.setLastName(person.lastname)
+            updatedPerson.setID(id)
+            updatedPerson.setFirstName(person.first_name)
+            updatedPerson.setLastName(person.last_name)
             updatedPerson.setGenre(person.genre)
             updatedPerson.setStreetNumber(person.street_number)
             updatedPerson.setStreetName(person.street_name)
-            updatedPerson.setAdditionnalAddress(person.additional_address)
+            updatedPerson.setAdditionalAddress(person.additional_address)
 
-            newPerson.setTown(town)
-            newPerson.setNationality(nationality)
+            updatedPerson.setTown(town)
+            updatedPerson.setNationality(nationality)
 
-            res: int = dao.update(person.id, updatedPerson)
+            res: int = dao.update(id, updatedPerson)
 
             if res==0:
                 return "ERROR"
@@ -118,7 +118,7 @@ class PersonsController:
         return None
     
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             dao = PersonsDAO()
             res: int = dao.delete(id)

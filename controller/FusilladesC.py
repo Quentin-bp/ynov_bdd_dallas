@@ -23,7 +23,7 @@ class FusilladesController:
         return None
     
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
 
             dao = FusilladesDAO()
@@ -71,13 +71,13 @@ class FusilladesController:
 
 
     @staticmethod
-    def update(fusillade : FusilladeModel):
+    def update(id : int,fusillade : FusilladeModel):
         daoFusillade = FusilladesDAO()
         daoTown= TownsDAO()
         try:
             town = daoTown.findById(fusillade.town_id)
             fusilladeUpdated = Fusillade()
-            fusilladeUpdated.setID(fusillade.id)
+            fusilladeUpdated.setID(id)
             fusilladeUpdated.setStreetNumber(fusillade.street_number)
             fusilladeUpdated.setStreetName(fusillade.street_name)
             fusilladeUpdated.setAdditionalAddress(fusillade.additional_address)
@@ -85,7 +85,7 @@ class FusilladesController:
             fusilladeUpdated.setDate(datetime.strptime(fusillade.date, "%Y-%m-%d").date())
             fusilladeUpdated.setTown(town)
             
-            res: int = daoFusillade.update(fusillade.id,fusilladeUpdated)
+            res: int = daoFusillade.update(id,fusilladeUpdated)
             if res==0:
                 return "ERROR"
             return "Fusillade Updated"
@@ -94,7 +94,7 @@ class FusilladesController:
         return None
     
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             dao = FusilladesDAO()
             res: int = dao.delete(id)

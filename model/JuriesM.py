@@ -7,7 +7,7 @@ class Jury:
     """
     def __init__(self):
         self.__id : int = None
-        self.__person_id : Person = None
+        self.__person : Person = None
     
     def setID(self, id: int) -> None:
         self.__id = id
@@ -15,12 +15,11 @@ class Jury:
     def getID(self) -> int:
         return self.__id
 
-    def setPersonID(self, person_id: Person) -> None:
-        self.__person_id = person_id
+    def setPerson(self, person: Person) -> None:
+        self.__person = person
 
-    def getPersonID(self) -> Person:
-        return self.__person_id
+    def getPerson(self) -> Person:
+        return self.__person
 
 class JuryModel(BaseModel):
-    id : int
     person_id : int

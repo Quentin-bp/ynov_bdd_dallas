@@ -21,5 +21,4 @@ class Nationality:
         return self.__name
 
 class NationalityModel(BaseModel):
-    id: int
     name : str

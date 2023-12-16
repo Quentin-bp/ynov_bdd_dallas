@@ -75,12 +75,11 @@ class Person:
 
 
 class PersonModel(BaseModel):
-        id: int
-        firstname: str 
-        lastname: str
+        first_name: str 
+        last_name: str
         genre : int
         street_number : str
         street_name: str
-        additional_address: Optional[str]
+        additional_address : str =""
         town_id : int
         nationality_id : int

@@ -1,6 +1,6 @@
 from dao.InvestigationsDAO import InvestigationsDAO
 from model import InvestigationsM
-from model.InvestigationsM import Investigation
+from model.InvestigationsM import Investigation,InvestigationModel
 from dao.FusilladesDAO import FusilladesDAO
 
 class InvestigationsController:
@@ -20,7 +20,7 @@ class InvestigationsController:
         return None
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
             dao = InvestigationsDAO()
             investigation: Investigation = dao.findById(id)
@@ -34,15 +34,16 @@ class InvestigationsController:
         return None
 
     @staticmethod
-    def insertOne(id, fusillade_id, advancement, status):
+    def insertOne(investigation : InvestigationModel):
+        daoFusillade = FusilladesDAO()
+        dao = InvestigationsDAO()
         try:
-            dao = InvestigationsDAO()
+            fusillade = daoFusillade.findById(investigation.fusillade_id)
             newInvestigation = InvestigationsM.Investigation()
-
             newInvestigation.setID(id)
-            newInvestigation.setFusillade(fusillade_id)
-            newInvestigation.setAdvancement(advancement)
-            newInvestigation.setStatus(status)
+            newInvestigation.setFusillade(fusillade)
+            newInvestigation.setAdvancement(investigation.advancement)
+            newInvestigation.setStatus(investigation.status)
 
             res: int = dao.insertOne(newInvestigation)
 
@@ -56,17 +57,18 @@ class InvestigationsController:
         return None
 
     @staticmethod
-    def update(id, fusillade_id, advancement, status):
+    def update(id : int, investigation : InvestigationModel):
+        dao = InvestigationsDAO()
+        daoFusillade = FusilladesDAO() 
         try:
-            dao = InvestigationsDAO()
-
-
             investigationUpdated = Investigation()
-
+            fusillade = daoFusillade.findById(investigation.fusillade_id)
+            if (fusillade == None):
+                return 'This fusillade does not exists in database'
             investigationUpdated.setID(id)
-            investigationUpdated.setFusillade(fusillade_id)
-            investigationUpdated.setAdvancement(advancement)
-            investigationUpdated.setStatus(status)
+            investigationUpdated.setFusillade(fusillade)
+            investigationUpdated.setAdvancement(investigation.advancement)
+            investigationUpdated.setStatus(investigation.status)
 
             res: int = dao.update(id, investigationUpdated)
             if res == 0:
@@ -77,7 +79,7 @@ class InvestigationsController:
         return None
 
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             dao = InvestigationsDAO()
 
@@ -89,8 +91,24 @@ class InvestigationsController:
             print(f"Erreur_InvestigationsC.delete():::{e}")
         return None
 
+    
     @staticmethod
-    def getActorsByInvestigationId(id):
+    def solveInvestigation(id):
+        try:
+            dao = InvestigationsDAO()
+            investigation = dao.findById(id)
+            if (investigation is None):
+                return 'This investigation does not exists in database'
+            res: int = dao.solveInvestigation(investigation)
+            if res==0 :
+                return "ERROR"
+            return "Investigation solved"
+        except Exception as e:
+            print(f'Erreur_InvestigationsC.delete() ::: {e}')
+        return None
+    
+    @staticmethod
+    def getActorsByInvestigationId(id : int):
         try:
             dao = InvestigationsDAO()
 

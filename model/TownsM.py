@@ -29,6 +29,5 @@ class Town:
 
 
 class TownModel(BaseModel):
-    id: int = 0,
     name: str = ""
     postal_code: str = ""

@@ -8,12 +8,12 @@ from dao.ConnexionDAO import ConnexionBD
 class PersonsDAO(ModelDAO):
     def __init__(self):
         
-        #params = ConnexionBD().getConnexion()
         params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
 
     def findById(self, id: int)-> Person:
+
         try:
             query = '''SELECT * FROM Persons WHERE id = %s;'''
             self.cursor.execute(query, (id,))
@@ -21,9 +21,9 @@ class PersonsDAO(ModelDAO):
 
             townDao = TownsDAO()
             nationalityDao = NationalitiesDAO()
-
             if res:
                 person = Person()
+                print(res)
                 person.setID(res[0])
                 person.setLastName(res[1]) 
                 person.setFirstName(res[2])
@@ -83,32 +83,18 @@ class PersonsDAO(ModelDAO):
 
     def insertOne(self, objIns: Person)->int:
         query = """INSERT INTO Persons (last_name, first_name, genre, street_number, street_name, additional_address, town_id, nationality_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
-        values = (
-                  objIns.getLastName(), 
-                  objIns.getFirstName(),
-                  objIns.getGenre(),
-                  objIns.getStreetNumber(), 
-                  objIns.getStreetName(),
-                  objIns.getAdditionalAddress(),
-                  objIns.getTown().getID(), 
-                  objIns.getNationality().getID()
-                 )
+        values = ( objIns.getLastName(), objIns.getFirstName(), objIns.getGenre(),
+                  objIns.getStreetNumber(), objIns.getStreetName(), objIns.getAdditionalAddress(),
+                  objIns.getTown().getID(), objIns.getNationality().getID() )
         error = "Erreur_PersonsDAO.insertOne()"
         return super().operationTable(query, values, error) 
 
 
     def update(self,id,objUpdated)->int:
-        query = """UPDATE Persons SET last_name=%s, first_name=%s, genre=%s, street_number=%s, street_name=%s, additional_adress=%s, town_id=%s, nationality_id=%s WHERE id=%s"""
-        values = (objUpdated.getLastName(), 
-                  objUpdated.getFirstName(),
-                  objUpdated.getGenre(),
-                  objUpdated.getStreetNumber(), 
-                  objUpdated.getStreetName(),
-                  objUpdated.getAdditionalAddress(),
-                  objUpdated.getTown().getID(), 
-                  objUpdated.getNationalityID().getID(),
-                  id
-                 )
+        query = """UPDATE Persons SET last_name=%s, first_name=%s, genre=%s, street_number=%s, street_name=%s, additional_address=%s, town_id=%s, nationality_id=%s WHERE id=%s"""
+        values = (objUpdated.getLastName(), objUpdated.getFirstName(), objUpdated.getGenre(),
+                  objUpdated.getStreetNumber(), objUpdated.getStreetName(),objUpdated.getAdditionalAddress(),
+                  objUpdated.getTown().getID(), objUpdated.getNationality().getID(),id)
         error = "Erreur_PersonsDAO.update()"
         return super().operationTable(query, values, error) 
 

@@ -56,7 +56,6 @@ class Fusillade:
 
 
 class FusilladeModel(BaseModel):
-        id: int = 0,
         street_number: str = ""
         street_name: str = ""
         additional_address: str = ""
