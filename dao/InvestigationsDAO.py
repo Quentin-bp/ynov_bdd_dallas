@@ -1,11 +1,15 @@
+import random
 from dao.ModelDAO import ModelDAO
-from model.InvestigationsM import Investigation, InvestigationModel
+from model.InvestigationsM import Investigation, Status
+
 from dao.FusilladesDAO import FusilladesDAO
-
-from dao.PersonsDAO import PersonsDAO
-
+from dao.SuspectsDAO import SuspectsDAO
+from dao.InvestigationSuspectsDAO import InvestigationSuspectsDAO
 from dao.ConnexionDAO import ConnexionBD
 
+from data.verdicts import verdicts
+from collections import Counter
+from model.SuspectsM import Suspect
 
 class InvestigationsDAO(ModelDAO):
     def __init__(self):
@@ -21,11 +25,11 @@ class InvestigationsDAO(ModelDAO):
                 self.cursor.execute(query, (id,))
                 res = self.cursor.fetchone()
                 if res:
-                    fusillade = fusilladeDAO.findById(res[4])
+                    fusillade = fusilladeDAO.findById(res[2])
                     investigation = Investigation()
                     investigation.setID(res[0])
-                    investigation.setFusillade(res[1])
-                    investigation.setAdvancement(res[2])
+                    investigation.setFusillade(fusillade)
+                    investigation.setAdvancement(res[1])
                     investigation.setStatus(res[3])
                     return investigation
                 else:
@@ -33,7 +37,7 @@ class InvestigationsDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_InvestigationsDAO.findById() ::: {e}")
 
-    def findAll(self) -> list:
+    def findAll(self) -> list[Investigation]:
             try:
                 query = '''SELECT * FROM Investigations'''
                 fusilladeDAO = FusilladesDAO()
@@ -41,15 +45,14 @@ class InvestigationsDAO(ModelDAO):
                 res = self.cursor.fetchall()
 
                 investigations = []
-
                 if len(res) > 0:
-
                     for r in res:
-                        fusillade = fusilladeDAO.findById(r[4])
+                        fusillade = fusilladeDAO.findById(r[2])
                         investigation = Investigation()
                         investigation.setID(r[0])
-                        investigation.setFusillade(r[1])
-                        investigation.setAdvancement(r[2])
+                    
+                        investigation.setFusillade(fusillade)
+                        investigation.setAdvancement(r[1])
                         investigation.setStatus(r[3])
 
                         investigations.append(investigation)
@@ -63,39 +66,45 @@ class InvestigationsDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_InvestigationsDAO.findAll() ::: {e}")
 
-    def insertOne(self, objIns: Investigation) -> int:
+    def insertOne(self, objIns: Investigation)->int:
+        query = '''INSERT INTO Investigations (fusillade_id, advancement) VALUES (%s, %s);'''
+        values = (objIns.getFusillade().getID(), objIns.getAdvancement(),)
+        error = "Erreur_InvestigationsDAO.insertOne()"
 
-            try:
-                query = '''INSERT INTO Investigations (fusillade_id, advancement, status) VALUES (%s, %s, %s);'''
-                self.cursor.execute(query, (objIns.getFusillade(), objIns.getAdvancement(), objIns.getStatus()))
-                self.cursor.connection.commit()
-                return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
-            except Exception as e:
-                print(f"Erreur_InvestigationsDAO.insertOne() ::: {e}")
-                self.cursor.connection.rollback()
-                return 0
+        return super().operationTable(query, values, error) 
 
-    def update(self, id, objUpdated: Investigation) -> int:
-            try:
-                query = '''UPDATE Investigations SET fusillade_id = %s, advancement = %s, status = %s WHERE id = %s;'''
-                self.cursor.execute(query, (objUpdated.getFusillade(), objUpdated.getAdvancement(), objUpdated.getStatus(), id))
-                self.cursor.connection.commit()
-                return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
-            except Exception as e:
-                print(f"Erreur_InvestigationsDAO.update() ::: {e}")
-                self.cursor.connection.rollback()
-                return 0
 
-    def delete(self, id) -> int:
-            try:
-                query = '''DELETE FROM Investigations WHERE id = %s;'''
-                self.cursor.execute(query, (id,))
-                self.cursor.connection.commit()
-                return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
-            except Exception as e:
-                print(f"Erreur_InvestigationsDAO.delete() ::: {e}")
-                self.cursor.connection.rollback()
-                return 0
+    def update(self,id : int, objUpdated : Investigation)->int:
+        query = '''UPDATE Investigations SET fusillade_id = %s, advancement = %s, status = %s WHERE id = %s;'''
+        values = (objUpdated.getFusillade().getID(), objUpdated.getAdvancement(),objUpdated.getStatus(),id)
+        error = "Erreur_InvestigationsDAO.update()"
+        return super().operationTable(query, values, error) 
+
+
+    def delete(self,id : int)->int:
+        query = """DELETE FROM Investigations WHERE id = %s"""
+        values = (id,)
+        error = "Erreur_InvestigationsDAO.delete()"
+        return super().operationTable(query, values, error)
+
+    def solveInvestigation(self,id : int):
+            suspectsDao = SuspectsDAO()
+            investigationSuspectsDao = InvestigationSuspectsDAO()
+            suspects :list[Suspect] = investigationSuspectsDao.findAllSuspectsByInvestigation(id)
+            listVerdicts = []
+            for i in range(len(suspects)):
+                listVerdicts.append(random.choice(verdicts)) 
+
+            nbInnocent = Counter(listVerdicts)["Innocent"]
+
+            for suspect in suspects:
+                    suspectsDao.assignVerdict(suspect.getID(), random.choice(listVerdicts))
+            status =  Status.WithoutFollowUp.value if nbInnocent == len(suspectsDao) else Status.Classified.value
+
+            query="""UPDATE Investigations SET status=%s WHERE id=%s"""
+            values = (status,id)
+            error = "Erreur_SuspectsDAO.solveInvestigation()"
+            return super().operationTable(query, values, error)
 
     def getActorsByInvestigationId(self, ObjInvId: int) -> 'list[Investigation]':
         try:

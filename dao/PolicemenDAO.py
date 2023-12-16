@@ -6,8 +6,6 @@ from model.PolicemenM import Policeman, PolicemanModel
 class PolicemenDAO(ModelDAO):
     def __init__(self):
         
-        #params = ModelDAO.connect_object
-        #params = ConnexionBD().getConnexion()
         params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
@@ -38,7 +36,7 @@ class PolicemenDAO(ModelDAO):
             print(f"Error_PolicemenDAO.findById() ::: {e}")
 
 
-    def findAll(self)->'list[Policeman]':
+    def findAll(self)->list[Policeman]:
         try:
             query="""SELECT * FROM Policemen"""
             self.cursor.execute(query)
@@ -68,19 +66,14 @@ class PolicemenDAO(ModelDAO):
 
     def insertOne(self, objIns: Policeman)->int:
         query = """INSERT INTO Policemen (person_id, serial_numbers) VALUES (%s, %s);"""
-        values = (objIns.getPerson().getID(), 
-                  objIns.getSerialNumbers()
-                 )
+        values = (objIns.getPerson().getID(), objIns.getSerialNumbers() )
         error = "Erreur_PolicemenDAO.insertOne()"
         return super().operationTable(query, values, error) 
 
 
     def update(self,id,objUpdated)->int:
-        query = """UPDATE Policemen SET person_id=%s, serial_numbers=% WHERE id=%s"""
-        values = (objUpdated.getPerson().getID(),
-                  objUpdated.getSerialNumbers(),
-                  id
-                 )
+        query = """UPDATE Policemen SET person_id=%s, serial_numbers=%s WHERE id=%s"""
+        values = (objUpdated.getPerson().getID(),objUpdated.getSerialNumbers(),id)
         error = "Erreur_PolicemenDAO.update()"
         return super().operationTable(query, values, error) 
 

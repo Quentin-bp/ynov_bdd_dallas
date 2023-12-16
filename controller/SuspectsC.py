@@ -1,18 +1,17 @@
 from model.SuspectsM import Suspect, SuspectModel
 from dao.SuspectsDAO import SuspectsDAO
 from dao.PersonsDAO import PersonsDAO
-
 class SuspectsController:
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
             dao = SuspectsDAO()
-            S = dao.findById(id)
+            suspect = dao.findById(id)
 
-            if S==None:
+            if suspect==None:
                 return "Suspects not found"
-            return S
+            return suspect
         except Exception as e:
             print(f"Erreur_SuspectController.findById() ::: {e}")
 
@@ -32,21 +31,21 @@ class SuspectsController:
 
 
     @staticmethod
-    def insertOne(S: SuspectModel):
+    def insertOne(suspect: SuspectModel):
         
         dao = SuspectsDAO()
         daoPerson = PersonsDAO()
         try:
-            person = daoPerson.findById(S.person_id)
+            person = daoPerson.findById(suspect.person_id)
             if not person:
                 return 'This person_id does not exists in database'
                 
-            newS = Suspect()
+            newSuspect = Suspect()
 
-            newS.setPerson(person)
-            newS.setVerdict(S.verdict)
+            newSuspect.setPerson(person)
+            newSuspect.setVerdict(suspect.verdict)
             
-            res: int = dao.insertOne(newS)
+            res: int = dao.insertOne(newSuspect)
 
             if res == 0:
                 return 'ERROR'
@@ -57,37 +56,37 @@ class SuspectsController:
 
     
     @staticmethod
-    def update(S: SuspectModel):
+    def update(id : int,suspect: SuspectModel):
 
         dao = SuspectsDAO()
         daoPerson = PersonsDAO()
         try:
-            person = daoPerson.findById(S.person_id)
+            person = daoPerson.findById(suspect.person_id)
             if (person == None):
                 return 'This person_id does not exists in database'
                 
-            updatedS = Suspects()
-
-            updatedS.setPerson(person)
-            updatedS.setSerialNumbers(S.verdict)
+            updatedSuspect = Suspect()
+            updatedSuspect.setID(id)
+            updatedSuspect.setPerson(person)
+            updatedSuspect.setVerdict(suspect.verdict)
             
-            res: int = dao.update(newS)
+            res: int = dao.update(id,updatedSuspect)
 
             if res == 0:
                 return 'ERROR'
 
             return "Suspects data updated"
         except Exception as e:
-            print(f"Erreeu_SuspectController.update() ::: {e}")
+            print(f"Erreur_SuspectController.update() ::: {e}")
 
     
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             res: int = SuspectsDAO().delete(id)
             if res==0:
                 return "ERROR"
             return "Suspects deleted"
         except Exception as e:
-            print(f"Erreeu_SuspectController.delete() ::: {e}")
+            print(f"Erreur_SuspectController.delete() ::: {e}")
             return None

@@ -30,6 +30,5 @@ class Suspect:
 
 
 class SuspectModel(BaseModel):
-    id : int
     person_id : int
     verdict : str

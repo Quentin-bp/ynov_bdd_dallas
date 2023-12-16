@@ -5,7 +5,7 @@ from dao.PersonsDAO import PersonsDAO
 class PolicemenController:
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
             policeman = PolicemenDAO().findById(id)
 
@@ -54,7 +54,7 @@ class PolicemenController:
 
     
     @staticmethod
-    def update(policeman: PolicemanModel):
+    def update(id : int,policeman: PolicemanModel):
 
         dao = PolicemenDAO()
         daoPerson = PersonsDAO()
@@ -68,7 +68,7 @@ class PolicemenController:
             updatedPoliceman.setPerson(person)
             updatedPoliceman.setSerialNumbers(policeman.serial_numbers)
             
-            res: int = dao.update(newPoliceman)
+            res: int = dao.update(id,updatedPoliceman)
 
             if res == 0:
                 return 'ERROR'
@@ -79,7 +79,7 @@ class PolicemenController:
 
     
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             res: int = PolicemenDAO().delete(id)
             if res==0:

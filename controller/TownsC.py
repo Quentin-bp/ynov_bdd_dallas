@@ -4,7 +4,7 @@ from model.TownsM import Town,TownModel
 class TownsController:
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
 
             dao = TownsDAO()
@@ -61,15 +61,15 @@ class TownsController:
         return None
 
     @staticmethod
-    def update(town : TownModel):
+    def update(id: int,town : TownModel):
         dao = TownsDAO()
         try:
             townUpdated = Town()
-            townUpdated.setID(town.id)
+            townUpdated.setID(id)
             townUpdated.setName(town.name)
             townUpdated.setPostalCode(town.postal_code)
             
-            res: int = dao.update(town.id,townUpdated)
+            res: int = dao.update(id,townUpdated)
             if res==0:
                 return "ERROR"
             return "Town Updated"
@@ -78,7 +78,7 @@ class TownsController:
         return None
     
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             dao = TownsDAO()
             res: int = dao.delete(id)

@@ -1,5 +1,4 @@
 from dao.ModelDAO import ModelDAO
-from model import NationalitiesM
 from model.NationalitiesM import Nationality, NationalityModel
 from dao.NationalitiesDAO import NationalitiesDAO
 
@@ -9,7 +8,7 @@ class NationalitiesController:
     def findAll():
         try:
             dao = NationalitiesDAO()
-            nationality = list[Nationality] = dao.findAll()
+            nationality : list[Nationality] = dao.findAll()
 
             if nationality is not None:
                 print("Nationality Unavailable")
@@ -20,7 +19,7 @@ class NationalitiesController:
         return None
 
     @staticmethod
-    def findById(id):
+    def findById(id : int):
         try:
             dao = NationalitiesDAO()
             nationality: Nationality = dao.findById(id)
@@ -37,9 +36,7 @@ class NationalitiesController:
     def insertOne(nationality: NationalityModel):
         try:
             dao = NationalitiesDAO()
-            newNationality = NationalitiesM.Nationality()
-
-            newNationality.setID(nationality.id)
+            newNationality = Nationality()
             newNationality.setName(nationality.name)
 
             res: int = dao.insertOne(newNationality)
@@ -52,16 +49,16 @@ class NationalitiesController:
         return None
 
     @staticmethod
-    def update(nationality: NationalityModel):
+    def update(id: int,nationality: NationalityModel):
         try:
             dao = NationalitiesDAO()
 
             nationalityUpdated = Nationality()
 
-            nationalityUpdated.setID(nationality.id)
+            nationalityUpdated.setID(id)
             nationalityUpdated.setName(nationality.name)
 
-            res: int = dao.update(nationality.id, nationalityUpdated)
+            res: int = dao.update(id, nationalityUpdated)
             if res == None:
                 return "ERROR"
             return "Nationality Updated"
@@ -71,7 +68,7 @@ class NationalitiesController:
         return None
 
     @staticmethod
-    def delete(id):
+    def delete(id : int):
         try:
             dao = NationalitiesDAO()
 

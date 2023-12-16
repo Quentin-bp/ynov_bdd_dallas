@@ -15,7 +15,7 @@ class Fusillade:
     def setID(self, id: int) -> None:
         self.__id = id
 
-    def getID(self, id: int) -> int:
+    def getID(self) -> int:
         return self.__id
 
     def setStreetNumber(self, street_number: str) -> None:
@@ -56,7 +56,6 @@ class Fusillade:
 
 
 class FusilladeModel(BaseModel):
-        id: int = 0,
         street_number: str = ""
         street_name: str = ""
         additional_address: str = ""

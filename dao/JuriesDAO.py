@@ -16,7 +16,7 @@ class JuriesDAO(ModelDAO):
                 res = self.cursor.fetchone()
                 if res:
                     person = personDAO.findById(res[1])
-                    jury = Juries()
+                    jury = Jury()
                     jury.setID(res[0])
                     jury.setPerson(person)
                     return jury
@@ -25,7 +25,7 @@ class JuriesDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_JuriesDAO.findById() ::: {e}")
 
-    def findAll(self) -> 'list[Jury]':
+    def findAll(self) -> list[Jury]:
             try:
                 query = '''SELECT * FROM Juries'''
                 personDAO = PersonsDAO()
@@ -33,16 +33,17 @@ class JuriesDAO(ModelDAO):
                 res = self.cursor.fetchall()
 
                 juries = []
-
                 if len(res) > 0:
 
                     for r in res:
-                        person = personDAO.findById(res[1])
-                        jury = Juries()
+                        person = personDAO.findById(r[1])
+                        jury = Jury()
                         jury.setID(r[0])
+             
                         jury.setPerson(person)
 
                         juries.append(jury)
+                    print(juries)
                     return juries
 
                 else:
@@ -51,36 +52,24 @@ class JuriesDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_JuriesDAO.findAll() ::: {e}")
 
-    def insertOne(self, objIns: Jury) -> int:
 
-        try:
-            query = '''INSERT INTO Juries (personId) VALUES (%s,);'''
-            self.cursor.execute(query, (objIns.getPerson(),))
-            self.cursor.connection.commit()
-            return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
-        except Exception as e:
-            print(f"Erreur_JuriesDAO.insertOne() ::: {e}")
-            self.cursor.connection.rollback()
-            return 0
+    def insertOne(self, objIns: Jury)->int:
+        query = '''INSERT INTO Juries (person_id) VALUES (%s)'''
+        values = (objIns.getPerson().getID(),)
+        error = "Erreur_JuriesDAO.insertOne()"
 
-    def update(self, id, objUpdated: Jury) -> int:
-        try:
-            query = '''UPDATE Juries SET personId = %s WHERE id = %s;'''
-            self.cursor.execute(query, (objUpdated.getPerson(), id))
-            self.cursor.connection.commit()
-            return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
-        except Exception as e:
-            print(f"Erreur_JuriesDAO.update() ::: {e}")
-            self.cursor.connection.rollback()
-            return 0
+        return super().operationTable(query, values, error) 
 
-    def delete(self, id) -> int:
-        try:
-            query = '''DELETE FROM Juries WHERE id = %s;'''
-            self.cursor.execute(query, (id,))
-            self.cursor.connection.commit()
-            return self.cursor.rowcount if self.cursor.rowcount != 0 else 0
-        except Exception as e:
-            print(f"Erreur_JuriesDAO.delete() ::: {e}")
-            self.cursor.connection.rollback()
-            return 0
+
+    def update(self,id : int, objUpdated : Jury)->int:
+        query = """UPDATE Juries SET person_id = %s WHERE id=%s"""
+        values = (objUpdated.getPerson().getID(),id)
+        error = "Erreur_JuriesDAO.update()"
+        return super().operationTable(query, values, error) 
+
+
+    def delete(self,id : int)->int:
+        query = """DELETE FROM Juries WHERE id = %s"""
+        values = (id,)
+        error = "Erreur_JuriesDAO.delete()"
+        return super().operationTable(query, values, error)

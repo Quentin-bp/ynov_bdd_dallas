@@ -30,6 +30,5 @@ class Policeman:
 
 
 class PolicemanModel(BaseModel):
-    id : int
     person_id : int
     serial_numbers : str

@@ -7,8 +7,7 @@ from dao.ConnexionDAO import ConnexionBD
 class SuspectsDAO(ModelDAO):
     def __init__(self):
 
-        #params = ModelDAO.connect_object
-        params = ConnexionBD().getConnexion()
+        params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
 
@@ -38,7 +37,7 @@ class SuspectsDAO(ModelDAO):
             print(f"Error_SuspectsDAO.findById() ::: {e}")
 
 
-    def findAll(self)->'list[Person]':
+    def findAll(self)->list[Suspect]:
         try:
             query="""SELECT * FROM Suspects"""
             self.cursor.execute(query)
@@ -55,7 +54,6 @@ class SuspectsDAO(ModelDAO):
                     suspect.setID(r[0])
 
                     person = personDao.findById(r[1])
-                    print(person)
                     suspect.setPerson(person)
 
                     suspect.setVerdict(r[2]) 
@@ -79,11 +77,8 @@ class SuspectsDAO(ModelDAO):
 
 
     def update(self,id,objUpdated)->int:
-        query="""UPDATE Suspects SET person_id=%s, verdict=% WHERE id=%s"""
-        values = (objUpdated.getPerson().getID(),
-                  objUpdated.getVerdict(),
-                  id
-                 )
+        query="""UPDATE Suspects SET person_id=%s, verdict=%s WHERE id=%s"""
+        values = (objUpdated.getPerson().getID(),objUpdated.getVerdict(),id)
         error = "Erreur_SuspectsDAO.update()"
         return super().operationTable(query, values, error) 
 

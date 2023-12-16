@@ -1,18 +1,16 @@
 from dao.ModelDAO import ModelDAO
-from dao.ConnexionDAO import ConnexionBD
-
-class Investigation_PolicemenDAO(ModelDAO):
+from model.InvestigationsPersonsM import InvestigationPoliceman
+class InvestigationPolicemenDAO(ModelDAO):
     def __init__(self):
-        params = ConnexionBD().getConnexion()
-        #params = ModelDAO.connect_object
+        params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
     ### CRUD
 
-    def insertOne(self, objIns: 'list[int]')->int:
+    def insertOne(self, objIns: InvestigationPoliceman)->int:
         query = '''INSERT INTO Investigation_Policemen (investigation_id, policeman_id) VALUES (%s, %s);'''
-        values = (objIns[0], objIns[1])
-        error = 'Erreur_Investigation_Policemen.insertOne()'
+        values = (objIns.investigation_id, objIns.policeman_id)
+        error = 'Erreur_InvestigationPolicemen.insertOne()'
         return super().operationTable(query, values, error) 
 
     def findAll(self)->list:
