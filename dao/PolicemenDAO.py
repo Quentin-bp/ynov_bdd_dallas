@@ -36,7 +36,7 @@ class PolicemenDAO(ModelDAO):
             print(f"Error_PolicemenDAO.findById() ::: {e}")
 
 
-    def findAll(self)->list[Policeman]:
+    def findAll(self)->'list[Policeman]':
         try:
             query="""SELECT * FROM Policemen"""
             self.cursor.execute(query)

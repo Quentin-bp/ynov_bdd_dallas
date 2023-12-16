@@ -7,7 +7,7 @@ class InvestigationJuriesDAO(ModelDAO):
 
     ### CRUD
 
-    def insertOne(self, objIns: list[int])->int:
+    def insertOne(self, objIns: 'list[int]')->int:
         query = '''INSERT INTO InvestigationJuries (investigation_id, jury_id) VALUES (%s, %s);'''
         values = (objIns[0], objIns[1])
         error = 'Erreur_InvestigationJuries.insertOne()'

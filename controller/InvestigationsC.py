@@ -104,7 +104,7 @@ class InvestigationsController:
                 return "ERROR"
             return "Investigation solved"
         except Exception as e:
-            print(f'Erreur_InvestigationsC.delete() ::: {e}')
+            print(f'Erreur_InvestigationsC.solveInvestigation() ::: {e}')
         return None
     
     @staticmethod

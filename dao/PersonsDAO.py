@@ -44,7 +44,7 @@ class PersonsDAO(ModelDAO):
             print(f"Error_PersonDAO.findById() ::: {e}")
 
 
-    def findAll(self)->list[Person]:
+    def findAll(self)->'list[Person]':
         try:
             query="""SELECT * FROM Persons"""
             self.cursor.execute(query)

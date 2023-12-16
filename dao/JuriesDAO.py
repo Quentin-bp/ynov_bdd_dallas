@@ -25,7 +25,7 @@ class JuriesDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_JuriesDAO.findById() ::: {e}")
 
-    def findAll(self) -> list[Jury]:
+    def findAll(self) -> 'list[Jury]':
             try:
                 query = '''SELECT * FROM Juries'''
                 personDAO = PersonsDAO()
