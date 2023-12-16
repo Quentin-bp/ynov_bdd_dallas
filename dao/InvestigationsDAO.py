@@ -185,160 +185,63 @@ class InvestigationsDAO(ModelDAO):
         
         table_name = role # au singulier (policeman or suspect or jury)
 
+        if table_name.lower() not in ['policeman', 'suspect', 'jury']:
+            return ['Role does not exist in database']
+
         try:
-            if table_name.lower() == 'policeman': 
-                query = f'''
-                    WITH investigation_overview as (
-                        SELECT DISTINCT i.id, f.description, i.status, 
-                                ps.last_name as policeman_last_name, ps.first_name as policeman_first_name, 
-                                ps2.last_name as suspect_last_name, ps2.first_name as suspect_first_name, 
-                                ps3.last_name as jury_last_name, ps3.first_name as jury_first_name
-                        FROM Investigations i
-                        INNER JOIN Investigation_Policemen ip ON i.id = ip.investigation_id
-                        INNER JOIN Policemen p ON ip.policeman_id = p.id
-                        INNER JOIN Persons ps ON p.person_id = ps.id
-                        INNER JOIN Investigation_Suspects isus ON i.id = isus.investigation_id
-                        INNER JOIN Suspects s ON isus.suspect_id = s.id
-                        INNER JOIN Persons ps2 ON s.person_id = ps2.id
-                        INNER JOIN Investigation_Juries ij ON i.id = ij.investigation_id
-                        INNER JOIN Juries j ON ij.jury_id = j.id
-                        INNER JOIN Persons ps3 ON j.person_id = ps3.id
-                        INNER JOIN fusillades f ON i.fusillade_id = f.id)
-                    SELECT * FROM investigation_overview
-                    WHERE policeman_last_name LIKE %s AND policeman_first_name LIKE %s;'''
+            query = f'''
+                WITH investigation_overview as (
+                    SELECT DISTINCT i.id, f.description, i.status, 
+                            ps.last_name as policeman_last_name, ps.first_name as policeman_first_name, 
+                            ps2.last_name as suspect_last_name, ps2.first_name as suspect_first_name, 
+                            ps3.last_name as jury_last_name, ps3.first_name as jury_first_name
+                    FROM Investigations i
+                    INNER JOIN Investigation_Policemen ip ON i.id = ip.investigation_id
+                    INNER JOIN Policemen p ON ip.policeman_id = p.id
+                    INNER JOIN Persons ps ON p.person_id = ps.id
+                    INNER JOIN Investigation_Suspects isus ON i.id = isus.investigation_id
+                    INNER JOIN Suspects s ON isus.suspect_id = s.id
+                    INNER JOIN Persons ps2 ON s.person_id = ps2.id
+                    INNER JOIN Investigation_Juries ij ON i.id = ij.investigation_id
+                    INNER JOIN Juries j ON ij.jury_id = j.id
+                    INNER JOIN Persons ps3 ON j.person_id = ps3.id
+                    INNER JOIN fusillades f ON i.fusillade_id = f.id)
+                SELECT * FROM investigation_overview
+                WHERE {table_name}_last_name LIKE %s AND {table_name}_first_name LIKE %s;'''
 
-                values = (last_name, first_name,)
-                self.cursor.execute(query, values)
-                result = self.cursor.fetchall()
+            values = (last_name, first_name,)
+            self.cursor.execute(query, values)
+            result = self.cursor.fetchall()
 
-                investigation_overviews = []
-                for row in result:
-                    print(row)
-                    investigation = {
-                        'investigation_id': row[0],
-                        'investigation_description': row[1],
-                        'investigation_status': row[2],
-                        'policeman':{
-                            'last_name': row[3],
-                            'first_name': row[4]
-                        },
-                        'suspect':{
-                            'last_name': row[5],
-                            'first_name': row[6]
-                        },
-                        'jury':{
-                            'last_name': row[7],
-                            'first_name': row[8]
-                        }
+            investigation_overviews = []
+            for row in result:
+                #print(row)
+                investigation = {
+                    'investigation_id': row[0],
+                    'investigation_description': row[1],
+                    'investigation_status': row[2],
+                    'policeman':{
+                        'last_name': row[3],
+                        'first_name': row[4]
+                    },
+                    'suspect':{
+                        'last_name': row[5],
+                        'first_name': row[6]
+                    },
+                    'jury':{
+                        'last_name': row[7],
+                        'first_name': row[8]
                     }
+                }
 
-                    investigation_overviews.append(investigation)
-                
-                return investigation_overviews
+                investigation_overviews.append(investigation)
+            
+            return investigation_overviews
 
-            elif table_name.lower() == 'suspect':
-                query = f'''
-                    WITH investigation_overview as (
-                        SELECT DISTINCT i.id, f.description, i.status, 
-                                ps.last_name as policeman_last_name, ps.first_name as policeman_first_name, 
-                                ps2.last_name as suspect_last_name, ps2.first_name as suspect_first_name, 
-                                ps3.last_name as jury_last_name, ps3.first_name as jury_first_name
-                        FROM Investigations i
-                        INNER JOIN Investigation_Policemen ip ON i.id = ip.investigation_id
-                        INNER JOIN Policemen p ON ip.policeman_id = p.id
-                        INNER JOIN Persons ps ON p.person_id = ps.id
-                        INNER JOIN Investigation_Suspects isus ON i.id = isus.investigation_id
-                        INNER JOIN Suspects s ON isus.suspect_id = s.id
-                        INNER JOIN Persons ps2 ON s.person_id = ps2.id
-                        INNER JOIN Investigation_Juries ij ON i.id = ij.investigation_id
-                        INNER JOIN Juries j ON ij.jury_id = j.id
-                        INNER JOIN Persons ps3 ON j.person_id = ps3.id
-                        INNER JOIN fusillades f ON i.fusillade_id = f.id)
-                    SELECT * FROM investigation_overview
-                    WHERE suspect_last_name LIKE %s AND suspect_first_name LIKE %s;'''
-
-                values = (last_name, first_name,)
-                self.cursor.execute(query, values)
-                result = self.cursor.fetchall()
-
-                investigation_overviews = []
-                for row in result:
-                    investigation = {
-                        'investigation_id': row[0],
-                        'investigation_description': row[1],
-                        'investigation_status': row[2],
-                        'policeman':{
-                            'last_name': row[3],
-                            'first_name': row[4]
-                        },
-                        'suspect':{
-                            'last_name': row[5],
-                            'first_name': row[6]
-                        },
-                        'jury':{
-                            'last_name': row[7],
-                            'first_name': row[8]
-                        }
-                    }
-
-                    investigation_overviews.append(investigation)
-                
-                return investigation_overviews
-
-            elif table_name.lower() == 'jury': 
-                query = f'''
-                    WITH investigation_overview as (
-                        SELECT DISTINCT i.id, f.description, i.status, 
-                                ps.last_name as policeman_last_name, ps.first_name as policeman_first_name, 
-                                ps2.last_name as suspect_last_name, ps2.first_name as suspect_first_name, 
-                                ps3.last_name as jury_last_name, ps3.first_name as jury_first_name
-                        FROM Investigations i
-                        INNER JOIN Investigation_Policemen ip ON i.id = ip.investigation_id
-                        INNER JOIN Policemen p ON ip.policeman_id = p.id
-                        INNER JOIN Persons ps ON p.person_id = ps.id
-                        INNER JOIN Investigation_Suspects isus ON i.id = isus.investigation_id
-                        INNER JOIN Suspects s ON isus.suspect_id = s.id
-                        INNER JOIN Persons ps2 ON s.person_id = ps2.id
-                        INNER JOIN Investigation_Juries ij ON i.id = ij.investigation_id
-                        INNER JOIN Juries j ON ij.jury_id = j.id
-                        INNER JOIN Persons ps3 ON j.person_id = ps3.id
-                        INNER JOIN fusillades f ON i.fusillade_id = f.id)
-                    SELECT * FROM investigation_overview
-                    WHERE jury_last_name LIKE %s AND jury_first_name LIKE %s;'''
-
-                values = (last_name, first_name,)
-                self.cursor.execute(query, values)
-                result = self.cursor.fetchall()
-
-                investigation_overviews = []
-                for row in result:
-                    investigation = {
-                        'investigation_id': row[0],
-                        'investigation_description': row[1],
-                        'investigation_status': row[2],
-                        'policeman':{
-                            'last_name': row[3],
-                            'first_name': row[4]
-                        },
-                        'suspect':{
-                            'last_name': row[5],
-                            'first_name': row[6]
-                        },
-                        'jury':{
-                            'last_name': row[7],
-                            'first_name': row[8]
-                        }
-                    }
-
-                    investigation_overviews.append(investigation)
-                
-                return investigation_overviews
-            else:
-                return ['Role does not exist in database']
         except Exception as e:
             #raise e
             print(f'Erreur_investigationsDAO.findByNameAndRole() ::: {e}')
-
+ 
     
 
 
