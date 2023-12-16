@@ -1,16 +1,16 @@
 from dao.ModelDAO import ModelDAO
 
-class Investigation_SuspectsDAO(ModelDAO):
+class InvestigationSuspectsDAO(ModelDAO):
     def __init__(self):
         params = ModelDAO.connect_object
         self.cursor = params.cursor()
 
     ### CRUD
 
-    def insertOne(self, objIns: 'list[int]')->int:
-        query = '''INSERT INTO Investigation_Suspects (investigation_id, suspect_id) VALUES (%s, %s);'''
+    def insertOne(self, objIns: list[int])->int:
+        query = '''INSERT INTO InvestigationSuspects (investigation_id, suspect_id) VALUES (%s, %s);'''
         values = (objIns[0], objIns[1])
-        error = 'Erreur_Investigation_Suspects.insertOne()'
+        error = 'Erreur_InvestigationSuspects.insertOne()'
         return super().operationTable(query, values, error) 
 
     def findAll(self)->list:

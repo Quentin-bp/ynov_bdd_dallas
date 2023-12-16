@@ -8,11 +8,11 @@ class SuspectsController:
     def findById(id):
         try:
             dao = SuspectsDAO()
-            S = dao.findById(id)
+            suspect = dao.findById(id)
 
-            if S==None:
+            if suspect==None:
                 return "Suspects not found"
-            return S
+            return suspect
         except Exception as e:
             print(f"Erreur_SuspectController.findById() ::: {e}")
 
@@ -32,21 +32,21 @@ class SuspectsController:
 
 
     @staticmethod
-    def insertOne(S: SuspectModel):
+    def insertOne(suspect: SuspectModel):
         
         dao = SuspectsDAO()
         daoPerson = PersonsDAO()
         try:
-            person = daoPerson.findById(S.person_id)
+            person = daoPerson.findById(suspect.person_id)
             if not person:
                 return 'This person_id does not exists in database'
                 
-            newS = Suspect()
+            newSuspect = Suspect()
 
-            newS.setPerson(person)
-            newS.setVerdict(S.verdict)
+            newSuspect.setPerson(person)
+            newSuspect.setVerdict(suspect.verdict)
             
-            res: int = dao.insertOne(newS)
+            res: int = dao.insertOne(newSuspect)
 
             if res == 0:
                 return 'ERROR'
@@ -57,21 +57,21 @@ class SuspectsController:
 
     
     @staticmethod
-    def update(S: SuspectModel):
+    def update(suspect: SuspectModel):
 
         dao = SuspectsDAO()
         daoPerson = PersonsDAO()
         try:
-            person = daoPerson.findById(S.person_id)
+            person = daoPerson.findById(suspect.person_id)
             if (person == None):
                 return 'This person_id does not exists in database'
                 
-            updatedS = Suspects()
+            updatedSuspect = Suspect()
 
-            updatedS.setPerson(person)
-            updatedS.setSerialNumbers(S.verdict)
+            updatedSuspect.setPerson(person)
+            updatedSuspect.setSerialNumbers(suspect.verdict)
             
-            res: int = dao.update(newS)
+            res: int = dao.update(updatedSuspect)
 
             if res == 0:
                 return 'ERROR'

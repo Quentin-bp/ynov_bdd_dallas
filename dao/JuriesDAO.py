@@ -16,7 +16,7 @@ class JuriesDAO(ModelDAO):
                 res = self.cursor.fetchone()
                 if res:
                     person = personDAO.findById(res[1])
-                    jury = Juries()
+                    jury = Jury()
                     jury.setID(res[0])
                     jury.setPerson(person)
                     return jury
@@ -25,7 +25,7 @@ class JuriesDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_JuriesDAO.findById() ::: {e}")
 
-    def findAll(self) -> 'list[Jury]':
+    def findAll(self) -> list[Jury]:
             try:
                 query = '''SELECT * FROM Juries'''
                 personDAO = PersonsDAO()
@@ -38,7 +38,7 @@ class JuriesDAO(ModelDAO):
 
                     for r in res:
                         person = personDAO.findById(res[1])
-                        jury = Juries()
+                        jury = Jury()
                         jury.setID(r[0])
                         jury.setPerson(person)
 

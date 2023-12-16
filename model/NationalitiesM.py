@@ -11,7 +11,7 @@ class Nationality:
     def setID(self, id: int) -> None:
         self.__id = id
 
-    def getID(self, id: int) -> int:
+    def getID(self) -> int:
         return self.__id
 
     def setName(self, name: str) -> None:

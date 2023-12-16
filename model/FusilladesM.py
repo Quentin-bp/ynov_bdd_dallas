@@ -15,7 +15,7 @@ class Fusillade:
     def setID(self, id: int) -> None:
         self.__id = id
 
-    def getID(self, id: int) -> int:
+    def getID(self) -> int:
         return self.__id
 
     def setStreetNumber(self, street_number: str) -> None:

@@ -38,7 +38,7 @@ class SuspectsDAO(ModelDAO):
             print(f"Error_SuspectsDAO.findById() ::: {e}")
 
 
-    def findAll(self)->'list[Person]':
+    def findAll(self)->list[Suspect]:
         try:
             query="""SELECT * FROM Suspects"""
             self.cursor.execute(query)
@@ -55,7 +55,6 @@ class SuspectsDAO(ModelDAO):
                     suspect.setID(r[0])
 
                     person = personDao.findById(r[1])
-                    print(person)
                     suspect.setPerson(person)
 
                     suspect.setVerdict(r[2]) 

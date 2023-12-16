@@ -1,13 +1,13 @@
-from dao.Investigation_SuspectsDAO import Investigation_SuspectsDAO
+from dao.InvestigationSuspectsDAO import InvestigationSuspectsDAO
 from dao.SuspectsDAO import SuspectsDAO
 from dao.InvestigationsDAO import InvestigationsDAO
 
-class Investigation_SuspectsController:
+class InvestigationSuspectsController:
 
     @staticmethod
     def insertOne(investigation_id: int, suspect_id: int):
 
-        dao = Investigation_SuspectsDAO()
+        dao = InvestigationSuspectsDAO()
         suspectsDao = SuspectsDAO()
         investigationsDao = InvestigationsDAO()
         try:
@@ -21,4 +21,4 @@ class Investigation_SuspectsController:
                     return 'ERROR'
                 return "Association added"
         except Exception as e:
-            print(f"Erreur_investigation_suspectsController.insertOne() ::: {e}")
+            print(f"Erreur_InvestigationSuspectsController.insertOne() ::: {e}")

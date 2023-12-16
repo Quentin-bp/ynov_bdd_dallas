@@ -9,7 +9,7 @@ class NationalitiesController:
     def findAll():
         try:
             dao = NationalitiesDAO()
-            nationality = list[Nationality] = dao.findAll()
+            nationality : list[Nationality] = dao.findAll()
 
             if nationality is not None:
                 print("Nationality Unavailable")

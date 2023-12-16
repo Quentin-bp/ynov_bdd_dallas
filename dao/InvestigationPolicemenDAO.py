@@ -1,7 +1,7 @@
 from dao.ModelDAO import ModelDAO
 from dao.ConnexionDAO import ConnexionBD
 
-class Investigation_PolicemenDAO(ModelDAO):
+class InvestigationPolicemenDAO(ModelDAO):
     def __init__(self):
         params = ConnexionBD().getConnexion()
         #params = ModelDAO.connect_object
@@ -9,10 +9,10 @@ class Investigation_PolicemenDAO(ModelDAO):
 
     ### CRUD
 
-    def insertOne(self, objIns: 'list[int]')->int:
-        query = '''INSERT INTO Investigation_Policemen (investigation_id, policeman_id) VALUES (%s, %s);'''
+    def insertOne(self, objIns: list[int])->int:
+        query = '''INSERT INTO InvestigationPolicemen (investigation_id, policeman_id) VALUES (%s, %s);'''
         values = (objIns[0], objIns[1])
-        error = 'Erreur_Investigation_Policemen.insertOne()'
+        error = 'Erreur_InvestigationPolicemen.insertOne()'
         return super().operationTable(query, values, error) 
 
     def findAll(self)->list:

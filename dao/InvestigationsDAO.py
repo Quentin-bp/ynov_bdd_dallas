@@ -33,7 +33,7 @@ class InvestigationsDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_InvestigationsDAO.findById() ::: {e}")
 
-    def findAll(self) -> list:
+    def findAll(self) -> list[Investigation]:
             try:
                 query = '''SELECT * FROM Investigations'''
                 fusilladeDAO = FusilladesDAO()
