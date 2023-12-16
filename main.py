@@ -5,6 +5,7 @@ from controller.Investigation_SuspectsC import Investigation_SuspectsController
 from controller.Investigation_JuriesC import Investigation_JuriesController
 from controller.DatabaseC import DatabaseController
 from controller.TownsC import TownsController
+from controller.InvestigationsC import InvestigationsController
 from controller.NationalitiesC import NationalitiesController
 from controller.FusilladesC import FusilladesController
 from controller.PersonsC import PersonsController
@@ -221,6 +222,11 @@ async def updateInvestigation(investigation : InvestigationModel):
 @app.delete("/investigation", tags=['Investigations'], description="Operations sur la table investigations")
 async def deleteInvestigation(investigation : InvestigationModel):
     return InvestigationsController.delete(investigation.id)
+
+@app.get("/investigation/{role}/{last_name}/{first_name}", tags=['Investigations'], description='Rechercher une enquête par le nom, prénom et le role de la personne')
+async def findByNameAndRole(last_name:str, first_name:str, role:str):
+    return InvestigationsController.findByNameAndRole(last_name, first_name, role)
+
 
 if __name__=='__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)

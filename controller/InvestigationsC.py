@@ -132,3 +132,17 @@ class InvestigationsController:
             return None
 
 
+    @staticmethod
+    def findByNameAndRole(last_name:str, first_name:str, role:str):
+        try:
+            dao = InvestigationsDAO()
+
+            res: list = dao.findByNameAndRole(last_name, first_name, role)
+            if res == None:
+                return 'ERROR'
+
+            return res
+        except Exception as e:
+            #raise e
+            print(f"Erreur_InvestigationsController.findByNameAndRole() ::: {e}")
+
