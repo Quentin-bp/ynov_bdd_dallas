@@ -94,31 +94,30 @@ class InvestigationsDAO(ModelDAO):
             listVerdicts = []
             for i in range(len(suspects)):
                 listVerdicts.append(random.choice(verdicts)) 
-
             nbInnocent = Counter(listVerdicts)["Innocent"]
 
             for suspect in suspects:
                     suspectsDao.assignVerdict(suspect.getID(), random.choice(listVerdicts))
-            status =  Status.WithoutFollowUp.value if nbInnocent == len(suspectsDao) else Status.Classified.value
-
+            status =  Status.Without_follow_up.value if nbInnocent == len(suspects) else Status.Classified.value
             query="""UPDATE Investigations SET status=%s WHERE id=%s"""
             values = (status,id)
             error = "Error_SuspectsDAO.solveInvestigation()"
             return super().operationTable(query, values, error)
+    
 
     def getActorsByInvestigationId(self, ObjInvId: int) -> list[Investigation]:
         try:
             query = '''SELECT DISTINCT
                             Investigations.id as id_enquete, Investigations.advancement as status_enquete, Investigation.fusillade_id as id_fusillade,
-                            Policeman.role AS policeman_role, Policeman.first_name as agent_first_name,Policeman.last_name AS agent_last_name,
-                            Suspect.role AS suspect_role, Suspect.first_name as suspect_first_name, Suspect.last_name AS suspect_last_name  
+                            Policemen.role AS policeman_role, Policeman.first_name as agent_first_name,Policeman.last_name AS agent_last_name,
+                            Suspects.role AS suspect_role, Suspect.first_name as suspect_first_name, Suspect.last_name AS suspect_last_name  
                         FROM
                             Investigations
                             JOIN Fusillades ON Investigations.fusillade_id = Fusillades.id
-                            JOIN Persons AS policeman_person ON Fusillades.town_id = Policeman_Person.town_id
-                            JOIN Policeman ON Policeman_Person.id = Policeman.id
+                            JOIN Persons AS policeman_person ON Fusillades.town_id = policeman_person.town_id
+                            JOIN Policemen ON policeman_person.id = Policemen.id
                             JOIN Persons AS Suspect_Person ON Fusillade.town_id = Suspect_Person.town_id
-                            JOIN "Suspect" ON Suspect_Person.id = Suspect.id
+                            JOIN Suspects ON Suspect_Person.id = Suspect.id
                         WHERE
                         Investigations.id = %s;'''
             fusilladeDAO = FusilladesDAO()

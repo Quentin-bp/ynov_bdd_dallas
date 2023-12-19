@@ -225,6 +225,10 @@ async def deleteInvestigation(id : int):
 async def investigationResearch(investigationResearch: InvestigationResearch):
     return InvestigationsController.findByNameAndRole(investigationResearch.last_name, investigationResearch.first_name, investigationResearch.role)
 
+@app.get("/investigation/{id}/actors")
+async def getActorsByIdInvestigation(id):
+    return InvestigationsController.getActorsByInvestigationId(id)
+
 @app.post("/solve_investigation/{id}", tags=[investigationsTag], description="Lancer la résolution d'une enquête") # pourquoi pas un get ? 
 async def solveInvestigation(id):
     return InvestigationsController.solveInvestigation(id)
