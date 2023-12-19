@@ -105,29 +105,32 @@ class InvestigationsDAO(ModelDAO):
             return super().operationTable(query, values, error)
     
 
-    def getActorsByInvestigationId(self, ObjInvId: int) -> list[Investigation]:
+    def getActorsByInvestigationId(self, id: int) -> list[Investigation]:
         try:
-            query = '''SELECT DISTINCT
-                            Investigations.id as id_enquete, Investigations.advancement as status_enquete, Investigation.fusillade_id as id_fusillade,
-                            Policemen.role AS policeman_role, Policeman.first_name as agent_first_name,Policeman.last_name AS agent_last_name,
-                            Suspects.role AS suspect_role, Suspect.first_name as suspect_first_name, Suspect.last_name AS suspect_last_name  
-                        FROM
-                            Investigations
-                            JOIN Fusillades ON Investigations.fusillade_id = Fusillades.id
-                            JOIN Persons AS policeman_person ON Fusillades.town_id = policeman_person.town_id
-                            JOIN Policemen ON policeman_person.id = Policemen.id
-                            JOIN Persons AS Suspect_Person ON Fusillade.town_id = Suspect_Person.town_id
-                            JOIN Suspects ON Suspect_Person.id = Suspect.id
-                        WHERE
-                        Investigations.id = %s;'''
+            query = '''SELECT * FROM
+				Investigations
+				INNER JOIN investigation_juries ON Investigations.id = investigation_juries.id
+				INNER JOIN investigation_policemen ON Investigations.id = investigation_policemen.id
+				INNER JOIN investigation_suspects ON Investigations.id = investigation_suspects.id
+
+				INNER JOIN policemen ON policemen.id = investigation_policemen.policeman_id
+				INNER JOIN suspects ON suspects.id = investigation_suspects.suspect_id
+				INNER JOIN juries ON juries.id = investigation_juries.jury_id
+				
+				JOIN persons ON persons.id = policemen.person_id
+				INNER JOIN persons as person_p ON person_p.id  = suspects.person_id
+				INNER JOIN persons as person_j ON person_j.id = juries.person_id
+				WHERE
+			Investigations.id = %s;'''
             fusilladeDAO = FusilladesDAO()
 
-            self.cursor.execute(query, (ObjInvId,))
+            self.cursor.execute(query, (id,))
             res = self.cursor.fetchall()
 
             investigations = []
             if len(res) > 0:
                 for r in res:
+                    print(res)
                     fusillade = fusilladeDAO.findById(res[2])
                     investigation = Investigation()
                     investigation.setID(r[0])
