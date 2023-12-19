@@ -21,7 +21,7 @@ from model.PersonsM import PersonModel
 from model.PolicemenM import PolicemanModel
 from model.SuspectsM import SuspectModel
 from model.JuriesM import JuryModel
-from model.InvestigationsPersonsM import InvestigationSuspect, InvestigationPoliceman, InvestigationJury
+from model.InvestigationsPersonsM import InvestigationSuspect, InvestigationPoliceman, InvestigationJury, InvestigationResearch
 app = FastAPI()
 descriptionGeneral = "Operations on the table"
 
@@ -222,8 +222,8 @@ async def deleteInvestigation(id : int):
     return InvestigationsController.delete(id)
 
 @app.get("/investigation/{role}/{last_name}/{first_name}", tags=[investigationsTag], description='Rechercher une enquête par le nom, prénom et le role de la personne')
-async def findByNameAndRole(last_name:str, first_name:str, role:str):
-    return InvestigationsController.findByNameAndRole(last_name, first_name, role)
+async def investigationResearch(investigationResearch: InvestigationResearch):
+    return InvestigationsController.findByNameAndRole(investigationResearch.last_name, investigationResearch.first_name, investigationResearch.role)
 
 @app.post("/solve_investigation/{id}", tags=[investigationsTag], description="Lancer la résolution d'une enquête") # pourquoi pas un get ? 
 async def solveInvestigation(id):

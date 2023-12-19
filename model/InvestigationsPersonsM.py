@@ -12,3 +12,8 @@ class InvestigationPoliceman(BaseModel):
 class InvestigationJury(BaseModel):
     investigation_id : int
     jury_id : int
+
+class InvestigationResearch(BaseModel):
+    first_name: str
+    last_name: str
+    role: str
