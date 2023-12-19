@@ -221,7 +221,7 @@ async def updateInvestigation(id : int,investigation : InvestigationModel):
 async def deleteInvestigation(id : int):
     return InvestigationsController.delete(id)
 
-@app.get("/investigation/{role}/{last_name}/{first_name}", tags=[investigationsTag], description='Rechercher une enquête par le nom, prénom et le role de la personne')
+@app.post("/investigation/research", tags=[investigationsTag], description='Rechercher une enquête par le nom, prénom et le role de la personne')
 async def investigationResearch(investigationResearch: InvestigationResearch):
     return InvestigationsController.findByNameAndRole(investigationResearch.last_name, investigationResearch.first_name, investigationResearch.role)
 
