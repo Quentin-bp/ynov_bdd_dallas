@@ -37,7 +37,7 @@ class InvestigationsDAO(ModelDAO):
             except Exception as e:
                 print(f"Error_InvestigationsDAO.findById() ::: {e}")
 
-    def findAll(self) -> 'list[Investigation]':
+    def findAll(self) -> list[Investigation]:
             try:
                 query = '''SELECT * FROM Investigations'''
                 fusilladeDAO = FusilladesDAO()
@@ -69,7 +69,7 @@ class InvestigationsDAO(ModelDAO):
     def insertOne(self, objIns: Investigation)->int:
         query = '''INSERT INTO Investigations (fusillade_id, advancement) VALUES (%s, %s);'''
         values = (objIns.getFusillade().getID(), objIns.getAdvancement(),)
-        error = "Erreur_InvestigationsDAO.insertOne()"
+        error = "Error_InvestigationsDAO.insertOne()"
 
         return super().operationTable(query, values, error) 
 
@@ -77,14 +77,14 @@ class InvestigationsDAO(ModelDAO):
     def update(self,id : int, objUpdated : Investigation)->int:
         query = '''UPDATE Investigations SET fusillade_id = %s, advancement = %s, status = %s WHERE id = %s;'''
         values = (objUpdated.getFusillade().getID(), objUpdated.getAdvancement(),objUpdated.getStatus(),id)
-        error = "Erreur_InvestigationsDAO.update()"
+        error = "Error_InvestigationsDAO.update()"
         return super().operationTable(query, values, error) 
 
 
     def delete(self,id : int)->int:
         query = """DELETE FROM Investigations WHERE id = %s"""
         values = (id,)
-        error = "Erreur_InvestigationsDAO.delete()"
+        error = "Error_InvestigationsDAO.delete()"
         return super().operationTable(query, values, error)
 
     def solveInvestigation(self,id : int):
@@ -103,10 +103,10 @@ class InvestigationsDAO(ModelDAO):
 
             query="""UPDATE Investigations SET status=%s WHERE id=%s"""
             values = (status,id)
-            error = "Erreur_SuspectsDAO.solveInvestigation()"
+            error = "Error_SuspectsDAO.solveInvestigation()"
             return super().operationTable(query, values, error)
 
-    def getActorsByInvestigationId(self, ObjInvId: int) -> 'list[Investigation]':
+    def getActorsByInvestigationId(self, ObjInvId: int) -> list[Investigation]:
         try:
             query = '''SELECT DISTINCT
                             Investigations.id as id_enquete, Investigations.advancement as status_enquete, Investigation.fusillade_id as id_fusillade,
@@ -184,7 +184,7 @@ class InvestigationsDAO(ModelDAO):
     #             return actors_list
     #
     #         except Exception as e:
-    #             print(f"Erreur_InvestigationsDAO.link_actors_by_advancement():::{e}")
+    #             print(f"Error_InvestigationsDAO.link_actors_by_advancement():::{e}")
     #
     #         finally:
     #             self.cursor.close()
@@ -249,7 +249,7 @@ class InvestigationsDAO(ModelDAO):
 
         except Exception as e:
             #raise e
-            print(f'Erreur_investigationsDAO.findByNameAndRole() ::: {e}')
+            print(f'Error_investigationsDAO.findByNameAndRole() ::: {e}')
  
     
 

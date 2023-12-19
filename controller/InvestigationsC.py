@@ -16,7 +16,7 @@ class InvestigationsController:
             return investigation
 
         except Exception as e:
-            print(f"Erreur_InvestigationsC.findAll() ::: {e}")
+            print(f"Error_InvestigationsC.findAll() ::: {e}")
         return None
 
     @staticmethod
@@ -30,7 +30,7 @@ class InvestigationsController:
             return investigation
 
         except Exception as e:
-            print(f"Erreur_InvestigationsC.findById() ::: {e}")
+            print(f"Error_InvestigationsC.findById() ::: {e}")
         return None
 
     @staticmethod
@@ -53,7 +53,7 @@ class InvestigationsController:
             return "Investigation Added"
 
         except Exception as e:
-            print(f"Erreur_InvestigationsC.insertOne():::{e}")
+            print(f"Error_InvestigationsC.insertOne():::{e}")
         return None
 
     @staticmethod
@@ -75,7 +75,7 @@ class InvestigationsController:
                 return "ERROR"
             return "Investigation Updated"
         except Exception as e:
-            print(f"Erreur_InvestigationsC.update():::{e}")
+            print(f"Error_InvestigationsC.update():::{e}")
         return None
 
     @staticmethod
@@ -88,7 +88,7 @@ class InvestigationsController:
                 return "ERROR"
             return "Investigation Deleted"
         except Exception as e:
-            print(f"Erreur_InvestigationsC.delete():::{e}")
+            print(f"Error_InvestigationsC.delete():::{e}")
         return None
 
     
@@ -99,12 +99,12 @@ class InvestigationsController:
             investigation = dao.findById(id)
             if (investigation is None):
                 return 'This investigation does not exists in database'
-            res: int = dao.solveInvestigation(investigation)
+            res: int = dao.solveInvestigation(investigation.getID())
             if res==0 :
                 return "ERROR"
             return "Investigation solved"
         except Exception as e:
-            print(f'Erreur_InvestigationsC.solveInvestigation() ::: {e}')
+            print(f'Error_InvestigationsC.solveInvestigation() ::: {e}')
         return None
     
     @staticmethod
@@ -118,7 +118,7 @@ class InvestigationsController:
 
             return res
         except Exception as e:
-            print(f'Erreur_InvestigationsC.linkActorsBy_investigationId():::{e}')
+            print(f'Error_InvestigationsC.linkActorsBy_investigationId():::{e}')
 
         return None
 
@@ -162,5 +162,5 @@ class InvestigationsController:
             return res
         except Exception as e:
             #raise e
-            print(f"Erreur_InvestigationsController.findByNameAndRole() ::: {e}")
+            print(f"Error_InvestigationsController.findByNameAndRole() ::: {e}")
 

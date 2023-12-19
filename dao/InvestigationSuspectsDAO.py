@@ -30,12 +30,11 @@ class InvestigationSuspectsDAO(ModelDAO):
 
     def findAllSuspectsByInvestigation(self,investigation_id : int):
         try:
-            query = '''SELECT * FROM Investigation_Suspects WHERE investigation_id LIKE %s'''
+            query = '''SELECT * FROM Investigation_Suspects WHERE investigation_id = %s'''
             self.cursor.execute(query,(investigation_id,) )
             res = self.cursor.fetchall()
             suspectsDao= SuspectsDAO()
             suspects = []
-
             if len(res) > 0:
 
                 for r in res:
@@ -46,4 +45,4 @@ class InvestigationSuspectsDAO(ModelDAO):
             else:
                     return []
         except Exception as e:
-            print(f"InvestigationSuspectsDAO.findAllByInvestigation() ::: {e}")
+            print(f"InvestigationSuspectsDAO.findAllSuspectsByInvestigation() ::: {e}")

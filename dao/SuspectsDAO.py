@@ -37,7 +37,7 @@ class SuspectsDAO(ModelDAO):
             print(f"Error_SuspectsDAO.findById() ::: {e}")
 
 
-    def findAll(self)->'list[Suspect]':
+    def findAll(self)->list[Suspect]:
         try:
             query="""SELECT * FROM Suspects"""
             self.cursor.execute(query)
@@ -72,19 +72,25 @@ class SuspectsDAO(ModelDAO):
         values = (objIns.getPerson().getID(), 
                   objIns.getVerdict()
                  )
-        error = "Erreur_SuspectsDAO.insertOne()"
+        error = "Error_SuspectsDAO.insertOne()"
         return super().operationTable(query, values, error) 
 
 
     def update(self,id,objUpdated)->int:
         query="""UPDATE Suspects SET person_id=%s, verdict=%s WHERE id=%s"""
         values = (objUpdated.getPerson().getID(),objUpdated.getVerdict(),id)
-        error = "Erreur_SuspectsDAO.update()"
+        error = "Error_SuspectsDAO.update()"
         return super().operationTable(query, values, error) 
 
 
     def delete(self,id)->int:
         query = """DELETE FROM Suspects WHERE id = %s;"""
         values = (id,)
-        error = "Erreur_SuspectsDAO.delete()"
+        error = "Error_SuspectsDAO.delete()"
         return super().operationTable(query, values, error)
+
+    def assignVerdict(self,id,verdict):
+        query="""UPDATE Suspects SET verdict=%s WHERE id=%s"""
+        values = (verdict,id)
+        error = "Error_SuspectsDAO.assignVerdict()"
+        return super().operationTable(query, values, error) 

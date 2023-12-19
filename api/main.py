@@ -3,8 +3,12 @@ import uvicorn
 from controller.DatabaseC import DatabaseController
 from controller.TownsC import TownsController
 from controller.FusilladesC import FusilladesController
+from controller.NationalitiesC import NationalitiesController
+
+from model.NationalitiesM import NationalityModel
 from model.TownsM import TownModel
 from model.FusilladesM import FusilladeModel
+from controller.InvestigationsC import InvestigationsController
 app = FastAPI()
 
 
@@ -59,7 +63,33 @@ async def updateFusillade(fusillade : FusilladeModel):
 async def deleteFusillade(fusillade : FusilladeModel):
     return FusilladesController.delete(fusillade.id)
 
+@app.post("/solve_investigation") # pourquoi pas un get ? 
+async def solveInvestigation(id):
+    return InvestigationsController.solveInvestigation(id)
 
+
+################# Nationalities #############################################
+
+@app.get("/nationalities", tags=['Nationalities'], description="Operations sur la table Nationalities")
+async def getNationalities():
+    return NationalitiesController.findAll()
+
+@app.get("/nationality/{id}", tags=['Nationalities'], description="Operations sur la table Nationalities")
+async def getNationality(id):
+    return NationalitiesController.findById(id)
+
+@app.post("/nationality", tags=['Nationalities'], description="Operations sur la table Nationalities")
+async def createNationality(nationality : NationalityModel):
+    return NationalitiesController.insertOne(nationality)
+
+@app.put("/nationality/{id}", tags=['Nationalities'], description="Operations sur la table Nationalities")
+async def updateNationality(id : int,nationality : NationalityModel):
+    print(id,nationality)
+    return NationalitiesController.update(id,nationality)
+
+@app.delete("/nationality/{id}", tags=['Nationalities'], description="Operations sur la table Nationalities")
+async def deleteNationality(id : int):
+    return NationalitiesController.delete(id)
 
 if __name__=='__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)
