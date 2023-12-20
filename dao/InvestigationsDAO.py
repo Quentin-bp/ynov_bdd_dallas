@@ -103,49 +103,6 @@ class InvestigationsDAO(ModelDAO):
             values = (status,id)
             error = "Error_SuspectsDAO.solveInvestigation()"
             return super().operationTable(query, values, error)
-    
-
-    def getActorsByInvestigationId(self, id: int) -> list[Investigation]:
-        try:
-            query = '''SELECT * FROM
-				Investigations
-				INNER JOIN investigation_juries ON Investigations.id = investigation_juries.id
-				INNER JOIN investigation_policemen ON Investigations.id = investigation_policemen.id
-				INNER JOIN investigation_suspects ON Investigations.id = investigation_suspects.id
-
-				INNER JOIN policemen ON policemen.id = investigation_policemen.policeman_id
-				INNER JOIN suspects ON suspects.id = investigation_suspects.suspect_id
-				INNER JOIN juries ON juries.id = investigation_juries.jury_id
-				
-				JOIN persons ON persons.id = policemen.person_id
-				INNER JOIN persons as person_p ON person_p.id  = suspects.person_id
-				INNER JOIN persons as person_j ON person_j.id = juries.person_id
-				WHERE
-			Investigations.id = %s;'''
-            fusilladeDAO = FusilladesDAO()
-
-            self.cursor.execute(query, (id,))
-            res = self.cursor.fetchall()
-
-            investigations = []
-            if len(res) > 0:
-                for r in res:
-                    print(res)
-                    fusillade = fusilladeDAO.findById(res[2])
-                    investigation = Investigation()
-                    investigation.setID(r[0])
-                    investigation.setFusillade(fusillade)
-                    investigation.setAdvancement(r[1])
-
-                    investigations.append(investigation)
-                return investigations
-            else:
-                return []
-        except Exception as e:
-            print(f"Error_InvestigationsDAO.linkActorsBy_investigationId():::{e}")
-        finally:
-            self.cursor.close()
-
 
     # def getActorsByStatus(self, advancement: str) -> list[dict]:
     #         try:

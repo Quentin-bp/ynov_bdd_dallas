@@ -36,9 +36,8 @@ class InvestigationSuspectsDAO(ModelDAO):
             suspectsDao= SuspectsDAO()
             suspects = []
             if len(res) > 0:
-
                 for r in res:
-                    suspect : Suspect = suspectsDao.findById(r[1])
+                    suspect : Suspect = suspectsDao.findById(r[2])
                     suspects.append(suspect)
                 return suspects
 

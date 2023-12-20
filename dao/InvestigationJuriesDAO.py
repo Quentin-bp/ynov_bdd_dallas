@@ -1,8 +1,11 @@
 from dao.ModelDAO import ModelDAO
 
+from dao.JuriesDAO import JuriesDAO
+from model.JuriesM import Jury
+
 class InvestigationJuriesDAO(ModelDAO):
     def __init__(self):
-        params = ModelDAO.connect_object
+        params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
     ### CRUD
@@ -21,3 +24,22 @@ class InvestigationJuriesDAO(ModelDAO):
 
     def delete(self,id)->int:
         pass        
+
+    def findAllJuriesByInvestigation(self,investigation_id : int):
+        try:
+            query = '''SELECT * FROM Investigation_Juries WHERE investigation_id = %s'''
+            self.cursor.execute(query,(investigation_id,) )
+            res = self.cursor.fetchall()
+            juriesDao= JuriesDAO()
+            juries = []
+            if len(res) > 0:
+
+                for r in res:
+                    jury : Jury = juriesDao.findById(r[1])
+                    juries.append(jury)
+                return juries
+
+            else:
+                    return []
+        except Exception as e:
+            print(f"InvestigationSuspectsDAO.findAllJuriesByInvestigation() ::: {e}")

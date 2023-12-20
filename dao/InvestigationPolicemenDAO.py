@@ -1,5 +1,7 @@
 from dao.ModelDAO import ModelDAO
 from model.InvestigationsPersonsM import InvestigationPoliceman
+from dao.PolicemenDAO import PolicemenDAO
+from model.PolicemenM import Policeman
 class InvestigationPolicemenDAO(ModelDAO):
     def __init__(self):
         params = ModelDAO.connect_objet
@@ -21,3 +23,22 @@ class InvestigationPolicemenDAO(ModelDAO):
 
     def delete(self,id)->int:
         pass        
+
+    def findAllPolicemenByInvestigation(self,investigation_id : int):
+        try:
+            query = '''SELECT * FROM Investigation_Policemen WHERE investigation_id = %s'''
+            self.cursor.execute(query,(investigation_id,) )
+            res = self.cursor.fetchall()
+            policemenDao= PolicemenDAO()
+            policemen = []
+            if len(res) > 0:
+
+                for r in res:
+                    suspect : Policeman = policemenDao.findById(r[1])
+                    policemen.append(suspect)
+                return policemen
+
+            else:
+                    return []
+        except Exception as e:
+            print(f"InvestigationSuspectsDAO.findAllPolicemenByInvestigation() ::: {e}")

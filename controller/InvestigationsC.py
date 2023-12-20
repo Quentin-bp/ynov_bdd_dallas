@@ -2,7 +2,12 @@ from dao.InvestigationsDAO import InvestigationsDAO
 from model import InvestigationsM
 from model.InvestigationsM import Investigation,InvestigationModel
 from dao.FusilladesDAO import FusilladesDAO
-
+from dao.InvestigationJuriesDAO import InvestigationJuriesDAO
+from dao.InvestigationPolicemenDAO import InvestigationPolicemenDAO
+from dao.InvestigationSuspectsDAO import InvestigationSuspectsDAO
+from model.JuriesM import Jury
+from model.PolicemenM import Policeman
+from model.SuspectsM import Suspect
 class InvestigationsController:
 
     @staticmethod
@@ -111,14 +116,31 @@ class InvestigationsController:
     def getActorsByInvestigationId(id : int):
         try:
             dao = InvestigationsDAO()
-
-            res: list[InvestigationsM.Investigation()] = dao.getActorsByInvestigationId(id)
-            if res == None:
-                return "ERROR"
-
+            investigation = dao.findById(id)
+            if (investigation is None):
+                return 'This investigation does not exists in database'
+            
+            daoJuries = InvestigationJuriesDAO()
+            daoPolicemen = InvestigationPolicemenDAO()
+            daoSuspects = InvestigationSuspectsDAO()
+            juries : list[Jury] = daoJuries.findAllJuriesByInvestigation(investigation.getID())
+            policemen : list[Policeman] = daoPolicemen.findAllPolicemenByInvestigation(investigation.getID())
+            suspects : list[Suspect] = daoSuspects.findAllSuspectsByInvestigation(investigation.getID())
+            if juries == None:
+                return "Error Juries"
+            if policemen == None:
+                return "Error Policemen"
+            if suspects == None:
+                return "Error Suspects"
+            
+            res = {
+                "juries": juries,
+                "policemen": policemen,
+                "suspects": suspects
+            }
             return res
         except Exception as e:
-            print(f'Error_InvestigationsC.linkActorsBy_investigationId():::{e}')
+            print(f'Error_InvestigationsC.getActorsByInvestigationId():::{e}')
 
         return None
 
