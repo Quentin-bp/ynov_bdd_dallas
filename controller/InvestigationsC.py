@@ -5,6 +5,7 @@ from dao.FusilladesDAO import FusilladesDAO
 from dao.InvestigationJuriesDAO import InvestigationJuriesDAO
 from dao.InvestigationPolicemenDAO import InvestigationPolicemenDAO
 from dao.InvestigationSuspectsDAO import InvestigationSuspectsDAO
+from dao.UsersDAO import UsersDAO
 from model.JuriesM import Jury
 from model.PolicemenM import Policeman
 from model.SuspectsM import Suspect
@@ -144,7 +145,17 @@ class InvestigationsController:
 
         return None
 
+    @staticmethod
+    def findByIdAndUser(user_name : int, investigation_id : int):
+        try:
+            usersDao = UsersDAO()
+            is_commissionner = usersDao.checkUserCommissioner(user_name)
+            if (is_commissionner == False) : return "Unauthorized"
+            return InvestigationsController.findById(investigation_id)
 
+        except Exception as e:
+            print(f"Error_InvestigationsC.findByIdAndUser() ::: {e}")
+        return None
     @staticmethod
     def insertOneByCommissar(user, id, fusillade_id, advancement, status):
         try:

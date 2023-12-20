@@ -12,6 +12,7 @@ from controller.PersonsC import PersonsController
 from controller.PolicemenC import PolicemenController
 from controller.SuspectsC import SuspectsController
 from controller.JuriesC import JuriesController
+from controller.UsersC import UsersController
 
 from model.TownsM import TownModel
 from model.NationalitiesM import NationalityModel
@@ -21,6 +22,7 @@ from model.PersonsM import PersonModel
 from model.PolicemenM import PolicemanModel
 from model.SuspectsM import SuspectModel
 from model.JuriesM import JuryModel
+from model.UsersM import UserModel
 from model.InvestigationsPersonsM import InvestigationSuspect, InvestigationPoliceman, InvestigationJury, InvestigationResearch
 app = FastAPI()
 descriptionGeneral = "Operations on the table"
@@ -38,6 +40,9 @@ async def createDatabase():
 async def insertData():
     return DatabaseController.insertData()
 
+@app.get("/create_roles", tags=['BDD'])
+async def createRoles():
+    return DatabaseController.createRoles()
 ################# Nationalities #############################################
 nationalitiesTag = "Nationalities"
 @app.get("/nationalities", tags=[nationalitiesTag], description=descriptionGeneral + nationalitiesTag)
@@ -245,6 +250,15 @@ async def createInvestigationSuspects(link : InvestigationSuspect):
 @app.post("/investigation_juries", tags=['Associations'])
 async def createInvestigationJuries(link : InvestigationJury):
     return InvestigationJuriesController.insertOne(link)
+
+
+@app.post("/create_commissioner", tags=['User'])
+async def createUserCommissioner(user: UserModel):
+    return UsersController.createUserCommissioner(user)
+
+@app.get("/user/{user_name}/investigation/{investigation_id}", tags=['Associations'])
+async def createInvestigationJuries(user_name : str , investigation_id :int):
+    return InvestigationsController.findByIdAndUser(user_name,investigation_id)
 
 if __name__=='__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)

@@ -13,8 +13,7 @@ from model.SuspectsM import Suspect
 
 class InvestigationsDAO(ModelDAO):
     def __init__(self):
-        params = ConnexionBD().getConnexion()
-        #params = ModelDAO.connect_objet
+        params = ModelDAO.connect_objet
         self.cursor = params.cursor()
 
     def findById(self, id: int) -> Investigation:

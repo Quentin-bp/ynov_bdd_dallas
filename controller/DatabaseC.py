@@ -1,5 +1,6 @@
 from migrations.Migrations import Migrations
 from seeders.Seeders import Seeders
+from roles.Roles import Roles
 class DatabaseController:
 
     @staticmethod
@@ -12,4 +13,10 @@ class DatabaseController:
     def insertData():
         seeders = Seeders()
         seeders.runAllSeeders()
+        return "Executed"
+    
+    @staticmethod
+    def createRoles() :
+        roles = Roles()
+        roles.createAllRoles()
         return "Executed"
